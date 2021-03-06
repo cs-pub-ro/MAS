@@ -1,0 +1,89 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+\newcommand{\languagesetting}{romanian}
+\newcommand{\geometrysetting}{vmargin = 2cm, hmargin = 2.5cm}
+\usepackage{quick}
+\usepackage{sendbox}
+
+\begin{document}
+\spk{-2ex}
+
+\dotitle[08.03.2021]{MAS: Activity 1 -- Predator - Prey with communication}{Alexandru Sorici}
+\vspace*{-6ex}\spk{1.2ex}
+
+\textbf{The Problem:} a classic predator - prey scenario. The environment is a rectangular room with $m\times n$ tiles.
+Obstacle tiles define the walls of the map.\\
+%
+The map contains $num\_pred$ predator agents and $num\_prey$ prey agents, knowing that $num\_pred > num\_prey$. By default there are two predator and one prey agents on the map. All agents are spawned randomly on the map, ensuring that all prey agents are at a Manhattan distance of 3 or greater from any predator agent. Furthermore, each agent of the same type (i.e. predator or prey) is at a Manhattan distance of at least 2 from another.\\
+%
+
+The predator agents also have the added ability to send messages to other predators that are known to them. Predators can only send messages to other predators they perceive nearby, or which they \textit{remember} from previous encounters.
+
+The purpose of the game is for the predator agents to eat all prey agents on the map. 
+The predator agents have to show two abilities:
+\begin{itemize}
+	\item the ability to \textit{assume roles} and divide the exploration of the map among themselves
+	\item the ability to \textit{use communication} to improve their strategy
+\end{itemize}
+
+Work on the predator agent strategy in an incremental fashion and compute the average number of steps taken to finish the game (over different initializations) for each of your increments to show improvements.
+
+In doing so consider the following specifications.
+
+% \vskip2ex
+
+\textbf{Specifications}\vskip-4ex
+\begin{itemize}\itemsep=.1ex
+	\item the agents have four operations: \textit{UP}, \textit{DOWN}, \textit{LEFT}, \textit{RIGHT}.
+	\item prey agents can perceive tiles at a maximum Manhattan distance of 2.
+	\item predator agents can perceive tiles at a maximum Manhattan distance of 3.
+	\item the agent's perception is modelled as a \code{MyPerceptions} structure, containing information about its current position, obstacles, nearby agents, as well as \textbf{the set of messages received from other agents}.
+	\item two agents \textbf{can} be located in the same tile
+
+	\vspace*{.5em}
+	\item predator agents \textbf{are allowed to use memory} and \textbf{communication}.
+	\item prey agents are reactive - they employ a random walk strategy, trying to stay away from predators if they perceive them.
+	
+	\vspace*{.5em}
+	\item a prey agent is considered killed in the following conditions:
+		\begin{itemize}
+			\item there is at least one predator at a Manhattan distance of 1 to the prey agent
+			\item there are at least two predators at a Manhattan distance of 2 to the prey agent
+		\end{itemize}
+\end{itemize}
+
+Work \textbf{only} in the \code{\bf my} package. If you need anything else, discuss with the assistant.
+
+\task Use your code from the previous activity combined with the new given code (see page \pageref{page2}).
+
+\task Implement in \code{MyEnvironment} the code for the management of messages. Messages sent at one step will be delivered in the next step.
+
+\task Design and implement a cognitive behavior, involving communication with other agents, for the predators, showing that this leads to an improved behaviour for both: \textbf{map exploration} (don't stay in the same place, explore different regions) and \textbf{hunting down prey} (converge quickly on prey). 
+
+\clearpage%\label{page2}
+
+\label{page2}
+% \paragraph*{}
+
+\textbf{Source code changes:} \begin{itemize}\itemsep1.5ex
+	\item added the \code{communication} package containing \code{AgentMessage}, \code{AgentID} and \\ \code{SocialAction}.
+	\item \code{MyPerceptions.nearbyPredators} is now a \code{Map} that also contains the \code{AgentID}s of the predators as keys (and their positions, as values)
+	\begin{itemize}
+		\item both \code{MyPerceptions} constructors are changed accordingly;
+		\item perception generation for prey is changed accordingly.
+		\item \code{MyPrey} code is changed accordingly.
+	\end{itemize}
+	\item \code{MyPerceptions} also contains a \code{Set} of received \code{AgentMessage}s. There is a gettern and a new constructor for \code{MyPerceptions} that initializes the message set.
+\end{itemize}
+
+
+\textbf{Helpful pointers:} \begin{itemize}\itemsep1.5ex
+	\item An \code{AgentMessage} contains a sender, a destination and some content. The sender and the destination are \code{AgentID} instances. The content can be whatever you want.
+	\item Generate necessary \code{AgentID}s using the static method \code{AgentID.getAgentID(Agent)}.
+	\item For predators, \code{response} should now return an instance of \code{SocialAction} instead of \code{MyAction}. ``Social actions'' contain the physical action to perform (movement) and also messages to be sent to other agents.
+	\item Messages from the returned \code{SocialAction} instance must be kept from one step to another in \code{MyEnvironment.messageBox}. \textbf{Careful:} don't store messages from the current step and from the previous step simultaneously in the \code{messageBox}. 
+\end{itemize}
+
+
+\sendbox{alex.sorici+mas@gmail.com}
+%\sendbox{cs+mas@andreiolaru.ro}
+\end{document}
