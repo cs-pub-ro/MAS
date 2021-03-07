@@ -59,31 +59,41 @@ Work \textbf{only} in the \code{\bf my} package. If you need anything else, disc
 
 \task Design and implement a cognitive behavior, involving communication with other agents, for the predators, showing that this leads to an improved behaviour for both: \textbf{map exploration} (don't stay in the same place, explore different regions) and \textbf{hunting down prey} (converge quickly on prey). 
 
+\textbf{Note} You are allowed to modify the constructor of the Predator Agents to give them the total number of predator agents, as well as the dimensions of the map. 
+
+
+\paragraph*{\textbf{Evaluation Method}} Create \textbf{two types} of predator agents: ones that \textbf{do not} use communication and ones \textbf{that do}. Use the following procedure:
+\begin{itemize}
+	\item Create an environment with a grid size of 10x12 (10 lines, 12 columns), with 4 predator agents and 10 prey agents.
+	\item Run 20 instances of the game in which predator agents \textbf{do not} use communication (they \textbf{only} use their exploration and prey convergence strategies). Compute \textbf{the average number of steps it takes to finish the game}.
+	\item Run 20 instances of the game in which predator agent \textbf{use communication} (alter their response strategy accordingly). Compute the average number of steps it takes to finish the game and compare this to the case with no communication.
+\end{itemize}
+
 \clearpage%\label{page2}
 
 \label{page2}
 % \paragraph*{}
-
-\textbf{Source code changes:} \begin{itemize}\itemsep1.5ex
-	\item added the \code{communication} package containing \code{AgentMessage}, \code{AgentID} and \\ \code{SocialAction}.
-	\item \code{MyPerceptions.nearbyPredators} is now a \code{Map} that also contains the \code{AgentID}s of the predators as keys (and their positions, as values)
-	\begin{itemize}
-		\item both \code{MyPerceptions} constructors are changed accordingly;
-		\item perception generation for prey is changed accordingly.
-		\item \code{MyPrey} code is changed accordingly.
-	\end{itemize}
-	\item \code{MyPerceptions} also contains a \code{Set} of received \code{AgentMessage}s. There is a gettern and a new constructor for \code{MyPerceptions} that initializes the message set.
-\end{itemize}
+%
+%\textbf{Source code changes:} \begin{itemize}\itemsep1.5ex
+%	\item added the \code{communication} package containing \code{AgentMessage}, \code{AgentID} and \\ \code{SocialAction}.
+%	\item \code{MyPerceptions.nearbyPredators} is now a \code{Map} that also contains the \code{AgentID}s of the predators as keys (and their positions, as values)
+%	\begin{itemize}
+%		\item both \code{MyPerceptions} constructors are changed accordingly;
+%		\item perception generation for prey is changed accordingly.
+%		\item \code{MyPrey} code is changed accordingly.
+%	\end{itemize}
+%	\item \code{MyPerceptions} also contains a \code{Set} of received \code{AgentMessage}s. There is a gettern and a new constructor for \code{MyPerceptions} that initializes the message set.
+%\end{itemize}
 
 
 \textbf{Helpful pointers:} \begin{itemize}\itemsep1.5ex
 	\item An \code{AgentMessage} contains a sender, a destination and some content. The sender and the destination are \code{AgentID} instances. The content can be whatever you want.
 	\item Generate necessary \code{AgentID}s using the static method \code{AgentID.getAgentID(Agent)}.
 	\item For predators, \code{response} should now return an instance of \code{SocialAction} instead of \code{MyAction}. ``Social actions'' contain the physical action to perform (movement) and also messages to be sent to other agents.
-	\item Messages from the returned \code{SocialAction} instance must be kept from one step to another in \code{MyEnvironment.messageBox}. \textbf{Careful:} don't store messages from the current step and from the previous step simultaneously in the \code{messageBox}. 
+	\item Messages from the returned \code{SocialAction} instance must be kept from one step to another in \code{MyEnvironment.messageBox}. \textbf{Careful:} don't store messages from the current step and from the previous step simultaneously in the \code{messageBox} (i.e. empty the messageBox after you have delivered all the messages from the previous step). 
 \end{itemize}
 
 
-\sendbox{alex.sorici+mas@gmail.com}
+%\sendbox{alex.sorici+mas@gmail.com}
 %\sendbox{cs+mas@andreiolaru.ro}
 \end{document}
