@@ -1,8 +1,9 @@
 \documentclass[a4paper, 12pt, twoside]{article}
 \newcommand{\languagesetting}{romanian}
 \newcommand{\geometrysetting}{vmargin = 2cm, hmargin = 2.5cm}
-\usepackage{quick}
-\usepackage{sendbox}
+\newcommand{\elementsroot}{../../}
+\usepackage{\elementsroot/quick}
+\usepackage{\elementsroot/sendbox}
 
 \begin{document}
 \spk{-2ex}
@@ -13,7 +14,7 @@
 \textbf{The Problem:} a classic predator - prey scenario. The environment is a rectangular room with $m\times n$ tiles.
 Obstacle tiles define the walls of the map.\\
 %
-The map contains $num\_pred$ predator agents and $num\_prey$ prey agents, knowing that $num\_pred > num\_prey$. By default there are two predator and one prey agents on the map. All agents are spawned randomly on the map, ensuring that all prey agents are at a Manhattan distance of 3 or greater from any predator agent. Furthermore, each agent of the same type (i.e. predator or prey) is at a Manhattan distance of at least 2 from another.\\
+The map contains $num\_pred$ predator agents and $num\_prey$ prey agents. By default there are two predator and one prey agents on the map. All agents are spawned randomly on the map, ensuring that all prey agents are at a Manhattan distance of 3 or greater from any predator agent. Furthermore, each agent of the same type (i.e. predator or prey) is at a Manhattan distance of at least 2 from another.\\
 %
 
 The predator agents have the ability to send messages to other predators that are known to them. Predators can only send messages to other predators they perceive nearby, or which they \textit{remember} from previous encounters.
