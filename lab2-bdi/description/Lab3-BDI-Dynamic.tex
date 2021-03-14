@@ -1,0 +1,127 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+\newcommand{\languagesetting}{romanian}
+\newcommand{\elementsroot}{../../}
+\usepackage{\elementsroot/quick}
+\usepackage{\elementsroot/sendbox}
+
+\begin{document}
+\spk{-2ex}\dotitle[15.03.2021]{MAS: Activity 3 -- Single BDI agent}{Alexandru Sorici}
+
+\spk{2ex}\vskip-7ex
+
+\textbf{The problem:} In the \textbf{blocks world}\rf{http://en.wikipedia.org/wiki/Blocks_world} an initial state is given. Blocks are identified by capital letters. Blocks can be placed one on top of the other ({\small $ON(A, B)$}), or on the table ({\small $ONTABLE(A)$}) (which can hold an unlimited number of stacks). The blocks and the table form a \textbf{station}. Blocks can be moved by an \textbf{arm} situated above the station. It can pick blocks and put them down, one block at a time. The arm is controlled by an agent, which is assigned a final goal state. The problem is solved when, by using legal operations (see below), the initial state is transformed into the final state.
+\bigskip
+%
+The environment, however is dynamic and \textbf{does not} allow for a deterministic planning.
+The dynamicity of the environment simulates the possible presence of other agents in the system, which our agent is unable to perceive or model. What can happen in the environment:
+\begin{itemize}
+	\item blocks may disappear from the top of a stack (including blocks that are on the table);
+	\item blocks that have previously disappeared may appear again, on top of an existing stack;
+	\item blocks may fall down to the table, from the top of a stack;
+	\item blocks may teleport (instantaneously) from the top of one stack to the top of another.
+\end{itemize}
+
+\textbf{NOTES:}
+\begin{enumerate}
+	\item the order of stacks on the table is not relevant, only relations between blocks are;
+	\item dynamic actions are only performed using legal operations (taking blocks from the top of stacks or from the table; putting blocks on the table or on top of stacks);
+	\item dynamic actions will only affect stacks that are not \textbf{currently observed} by any agent(s);
+\end{enumerate}
+
+
+\textbf{Example}\\
+{\ttfamily
+\begin{tabular}{ p{.18\tw} p{.17\tw} p{.17\tw} p{.17\tw} p{.17\tw}}
+*1 		\par <> \nl\par
+[A]		\par
+[B] [C]
+&
+*1 		\par
+<A> 	\nl\nl
+		\par
+[B] [C]
+&
+\hskip4ex *1 \par\hskip4ex <>\nl\nl\par
+[B] [C] [A]
+&
+*1 		\par
+<B> 	\nl\nl
+		\par
+\hskip2ex [C] [A]
+&
+\hskip2ex*1 \par\hskip2ex <>\nl \par
+\hskip2ex[B]	\par
+\hskip2ex[C] [A]
+\\\hline
+initial state
+&
+$Unstack(A, B)$
+&
+$Putdown(A)$
+&
+$Pickup(B)$
+&
+$Stack(B, C)$\newline
+final state
+\end{tabular}
+}\vskip-2ex
+
+\textbf{The solution:} use a \textbf{single-minded BDI} agent to solve the problem. 
+The agent receives as perception the current state of the station (the station does \textbf{not} contain the block held by the arm), as a list of \textsc{FOPL} predicates ({\small $ ON(X, Y)$, $ONTABLE(X)$, or $CLEAR(X)$}). 
+The agent controls the arm to take a block ($Pickup(C)$ from the table or $Unstack(A, B)$) or to put it down ($Putdown(A)$ on the table or $Stack(B, C)$). 
+The agent can also \textit{lock} a block into place ($Lock(C)$), such that the dynamic actions of the environment can no longer affect it. A locked blocked \textit{cannot} be \textit{unlocked}.
+
+The state of the arm can be checked using predicates {\small $ARMEMPTY$} and {\small $HOLD(X)$}. If more blocks are stacked one on top of the other, only the top block can be unstacked. A block can only be on the table, stacked on another block, or held by the arm.
+
+
+
+\textbf{Tasks:}\vskip-2ex
+\begin{itemize}\itemsep.7ex
+	\item Devise a \textbf{planning method} to solve the given problem. (see Page \pageref{res:res} for some ideas - easiest one is UNSTACK-STACK)
+	\item Implement the algorithm of the agent as a BDI process, by implementing the \code{reviseBeliefs()} and \code{plan()} methods.
+		\begin{itemize}
+			\item use the \code{reviseBeliefs} function to update the agent's memory of the world.
+			\item use \textbf{\textit{desires}} to model meta-actions such as ``Find block A'', ``Build tower ABC''
+			\item instantiate your desires as \textbf{\textit{intentions}} by creating \textbf{partial plans} to avoid replanning when a needed block disappears;
+			\item adapt the current plan being executed to adjust for blocks that have moved: either \textit{re-plan} for same goal, or \textit{switch to} other partial plan
+		\end{itemize}
+	\item Test the planning onto the various tests; make plans short (no obviously redundant actions). Display your plan using the \code{statusString()} method.
+	\item Use the \texttt{statusString()} method of the agent to monitor the agent.
+\end{itemize}
+
+
+
+\newpage\label{res:res}
+
+\textbf{BDI elements:}
+\doitemize[0ex]{
+	\item Beliefs -- what the agent believes about the world;
+	\item Desires -- what the agent would want to be true;
+	\item Intentions -- what the agent plans for;
+	\item brf -- belief revision;
+	\item options -- what non-contradicting, possible goals the agent can set itself;
+	\item filter -- goals the agent should plan for (commit to);
+}
+
+\textbf{Heads-up:}
+\doitemize[0ex]{
+	\item \code{Blocks} contains all methods needed for reading the state of a station and change it. Read the documentation of \code{contains} and \code{exists} and remember the difference.
+% 	\item 
+}
+
+
+\textbf{Testing:} Change the test suite by changing \code{TEST\_SUITE} in \code{MyTester}.
+
+\textbf{Planning algorithms:}\\
+Unstack-Stack, Gupta and Nau, 1 and 2: \\ 
+\hskip3ex{\scriptsize\url{http://ai.cs.unibas.ch/_files/teaching/hs12/search-opt-seminar/slides/08_blocks_world_revisited.pdf}}	\\
+SATPLAN:	{\scriptsize\url{http://www.inf.unibz.it/~fillottrani/Class4p.pdf}}	\\
+Some examples of planning:	{\scriptsize\url{http://www.cs.cf.ac.uk/Dave/AI2/node116.html}}	\\
+Genetic algorithms:	{\scriptsize\url{http://www.inf.ed.ac.uk/teaching/courses/gagp/slides06/4gagplect10.pdf}}	\\
+STRIPS, Graphplan and other algorithms: \\ 
+\hskip3ex{\scriptsize\url{http://www.ailab.si/ivan/datoteke/dokumenti/31/100_60_planning_postgraduate_course_2010.pdf}}
+
+
+%\sendbox{alex.sorici+mas@gmail.com}
+%\sendbox{cs+mas@andreiolaru.ro}
+\end{document}
