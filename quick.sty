@@ -1,0 +1,60 @@
+
+% class for use with laboratory texts, quick texts, etc. Replaces the older white.sty
+
+% USE:
+% generally use with document class (optionally with options 12pt and twoside)
+% \documentclass[a4paper]{article}
+% then:
+%
+% from the RSH article folders. just:
+% \usepackage{../_package/quick}
+%
+% from other locations:
+% \newcommand{\elementsroot}{path/to/RSH/}
+% \usepackage{\elementsroot_package/quick}
+
+\ifdefined\elementsroot
+	\usepackage{\elementsroot/AOcommon}
+\else
+	\usepackage{AOcommon}
+\fi
+
+\ifdefined\geometrysetting
+	\usepackage[\geometrysetting]{geometry}
+\else
+	\usepackage[hmargin = 2.5cm, top = 3cm, bottom = 2cm, head = 15pt, foot = 20pt]{geometry}
+\fi
+\usepackage{lscape}
+\usepackage[usenames,dvipsnames]{color}
+\ifx\nohref\undefined
+\usepackage[bookmarks,unicode,colorlinks=true,linkcolor=Sepia,citecolor=Sepia,urlcolor=Sepia]{hyperref}
+\fi
+
+\usepackage{enumitem}\setlist{nolistsep, noitemsep}
+\ifx\noulem\undefined
+	\usepackage{ulem}
+\fi
+
+
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{2ex}
+
+
+\newcommand{\dotitle}[3][\today]{
+\title{#2}
+\author{#3}
+\date{#1}
+\maketitle
+}
+
+\newcommand{\doabstract}[1]{	\begin{abstract}#1\end{abstract}	}
+
+\newcommand{\hs}[1][5ex]{\hspace*{#1}}
+\newcommand{\vs}[1][2ex]{\vspace*{#1}}
+
+\newcommand{\rf}[2][]{\footnote{#1\url{#2}}}
+
+\newcounter{task}
+\newcommand{\task}[1][To Do ]{\addtocounter{task}{1}{\bf #1\arabic{task}:} }
+
+
