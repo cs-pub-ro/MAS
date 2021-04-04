@@ -4,6 +4,7 @@ from gym.utils import seeding
 from .representation import *
 from typing import Dict, List, Tuple, Optional
 
+
 class Action(Enum):
     NORTH = (0, GridOrientation.NORTH, "N")
     EAST =  (1, GridOrientation.EAST, "E")
@@ -24,6 +25,31 @@ class GameAction:
     def __init__(self, seeker_actions: Dict[int, Action], hider_actions: Dict[int, Action]):
         self.seeker_actions = seeker_actions
         self.hider_actions = hider_actions
+        
+    def __eq__(self, other):
+        if not isinstance(other, GameAction):
+            return False
+        
+        for ag_id, ag_act in self.seeker_actions.items():
+            if ag_act != other.seeker_actions[ag_id]:
+                return False
+
+        for ag_id, ag_act in self.hider_actions.items():
+            if ag_act != other.hider_actions[ag_id]:
+                return False
+            
+        return True
+    
+    def __hash__(self):
+        res = 1
+
+        for ag_act in self.seeker_actions.values():
+            res *= hash(ag_act)
+
+        for ag_act in self.hider_actions.values():
+            res *= hash(ag_act)
+        
+        return res
 
 
 class GameState:
@@ -35,6 +61,20 @@ class GameState:
         self.seeker_positions = seeker_positions
         
         self.box_position = box_position
+        
+    def as_tuple(self):
+        return tuple([self.seeker_positions[ag_id] for ag_id in sorted(self.seeker_positions.keys())] +
+                     [self.hider_positions[ag_id] for ag_id in sorted(self.hider_positions.keys())] +
+                     [self.box_position])
+    
+    def __eq__(self, other):
+        if not isinstance(other, GameState):
+            return False
+        
+        return self.as_tuple() == other.as_tuple()
+    
+    def __hash__(self):
+        return hash(self.as_tuple())
 
 
 class Reward:
@@ -83,6 +123,10 @@ class HideAndSeekEnv(gym.Env):
         self.turns = 0
         
         self.__initialize()
+    
+    def get_num_actions(self):
+        return len(Action) * len(Action)
+    
     
     def __initialize(self):
         """
@@ -150,7 +194,7 @@ class HideAndSeekEnv(gym.Env):
         
         # define doorway into SAFE ZONE
         self._doorway_pos: GridPosition = GridPosition(self.rx_i1, self.ry_i1 - 1)
-    
+        self._box_blocking_pos: GridPosition = GridPosition(self.rx_i1 - 1, self.ry_i1 - 1)
     
     def _get_all_neighbours(self, pos: GridPosition) -> List[GridPosition]:
         """
@@ -290,8 +334,10 @@ class HideAndSeekEnv(gym.Env):
                             # only update the box position here, the agent pos will get updated in the general case
                             self._box_position = new_box_pos
                             
-                            # hiders get both half the MOVE BOX reward
-                            hider_rewards[hider_id] += HideAndSeekEnv.MOVE_BOX_REWARD / 2
+                            # if the box is moved into the position blocking the entrance,
+                            # both hiders get half the MOVE BOX reward
+                            if self._box_position == self._box_blocking_pos:
+                                hider_rewards[hider_id] += HideAndSeekEnv.MOVE_BOX_REWARD / 2
         
         # if they are not in the same spot OR they are BUT perform different movements, just add the movement reward
         for hider_id, hider_pos in self._hide_agent_pos.items():
