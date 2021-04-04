@@ -3,7 +3,7 @@ from io import TextIOWrapper
 from typing import Iterable, List, Set, Dict, Tuple
 from collections import deque
 
-REWARD_FINAL = 100
+REWARD_FINAL = 10
 REWARD_VALID = -1
 REWARD_INVALID = -10
 
