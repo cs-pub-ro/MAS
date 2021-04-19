@@ -238,7 +238,11 @@ class DynamicBlocksWorldEnvironment(object):
             if not self.adata.holding or self.adata.holding != act.get_first_arg():
                 return self.get_world_state(), REWARD_INVALID, False
 
-            self.world_state.stack(act.get_first_arg(), act.get_second_arg())
+            # self.world_state.stack(act.get_first_arg(), act.get_second_arg())
+            reward = self.world_state.stack(act.get_first_arg(), act.get_second_arg())
+            if reward == REWARD_INVALID:
+                return self.get_world_state(), REWARD_INVALID, False
+            
             self.adata.holding = None
             self.adata.previous_action_succeeded = True
             reward = REWARD_VALID
