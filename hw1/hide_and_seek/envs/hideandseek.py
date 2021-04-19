@@ -229,9 +229,9 @@ class HideAndSeekEnv(gym.Env):
             return False
         if hider_pos.get_relative_dx(self._safe_zone["bottom_right"]) > 0:
             return False
-        if hider_pos.get_relative_dy(self._safe_zone["top_left"]) < 0:
+        if hider_pos.get_relative_dy(self._safe_zone["top_left"]) > 0:
             return False
-        if hider_pos.get_relative_dy(self._safe_zone["bottom_right"]) > 0:
+        if hider_pos.get_relative_dy(self._safe_zone["bottom_right"]) < 0:
             return False
         if hider_pos.is_neighbour(self._doorway_pos):
             return False
