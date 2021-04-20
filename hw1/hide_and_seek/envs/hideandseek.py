@@ -239,8 +239,9 @@ class HideAndSeekEnv(gym.Env):
         return True
     
     def _all_hiders_safe(self):
-        return all([self._is_hider_safe(hider_pos) for hider_pos in self._hide_agent_pos.values()])
-
+        return self._box_position == GridPosition(self.rx_i1 - 1, self.ry_i1 - 1) and \
+            all([self._is_hider_safe(hider_pos) for hider_pos in self._hide_agent_pos.values()])
+            
     def _game_finished(self):
         """
         Return True if the seeker agents found at least one hider OR if the hider agents managed
