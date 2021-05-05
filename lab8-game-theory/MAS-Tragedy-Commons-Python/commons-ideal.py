@@ -108,6 +108,7 @@ class CommonsEnvironment(Environment):
         self._finished = False
 
         self._utility_scores: List[float] = []
+        self._ideal_utility_scores: List[float] = []
         self._individual_utility_scores: List[Dict[CommonsAgent, float]] = []
         self._individual_shares: List[Dict[CommonsAgent, float]] = []
 
@@ -251,7 +252,11 @@ class CommonsEnvironment(Environment):
             if chance < self._chance_replenish:
                 self.resource_quantity *= 2
 
+            ## compute ideal score
             num_agents = len(self.commons_agents)
+            ideal_shares = [1.0 / (2 * num_agents)] * num_agents
+            ideal_score = self.__commons_utility(self.resource_quantity, ideal_shares)
+            self._ideal_utility_scores.append(ideal_score)
 
             # Stage 0: compute deviations if there are any
             agent_utility_funcs = self.__get_utility_functions()
@@ -351,28 +356,29 @@ class CommonsEnvironment(Environment):
 
     def __str__(self):
         res = "#### Commons Environment ####" + "\n"
-
+    
         if self._crt_round > 0:
             res += "\t" + " - " + "Round %i out of %i" % (self._crt_round, self._total_rounds) + "\n"
             res += "\t" + " - " + "Remaining resource quantity: %f" % self.resource_quantity + "\n"
-
+        
             p = sum(self._individual_shares[self._crt_round - 1].values())
             res += "\t" + " - " + "Consumed resource quantity: %f" \
                    % (p * self.resource_quantity / (1 - p)) + "\n"
+            res += "\t" + " - " + "Ideal Collective Utility: %f" % self._ideal_utility_scores[
+                self._crt_round - 1] + "\n"
             res += "\t" + " - " + "Real Collective Utility: %f" % self._utility_scores[self._crt_round - 1] + "\n"
-
+        
             res += "\t" + " - " + "Individual Shares: " + "\n"
             for agent, share in self._individual_shares[self._crt_round - 1].items():
                 res += "\t\t" + " - " + "(%s: %f)" % (agent.name, share) + "\n"
-
+        
             res += "\t" + " - " + "Individual Utility: " + "\n"
             for agent, utility in self._individual_utility_scores[self._crt_round - 1].items():
                 res += "\t\t" + " - " + "(%s: %f)" % (agent.name, utility) + "\n"
-
+    
         else:
             res += "\t" + " - " + "Initial resource quantity: %f" % self.resource_quantity + "\n"
-
-
+    
         return res
 
 
