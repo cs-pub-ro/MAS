@@ -20,4 +20,8 @@ class StudentAgent(CommonsAgent):
         #  (i.e. your agent thinks somebody should conusme less and somebody more)
         return AgentAction(self.id, resource_share=0, no_action=True)
 
+    def inform_round_finished(self, negotiation_round: int, perception: CommonsPerception):
+        ## information sent to the agent once the current round (including all adjustment rounds) is finished
+        pass
+
 

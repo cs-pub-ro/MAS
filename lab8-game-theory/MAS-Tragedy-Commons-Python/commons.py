@@ -9,7 +9,7 @@ class CommonsPerception(object):
     """
     The perception data structure received by agents in the Tragedy of the Commons scenario
     """
-    def __init__(self, destination_id: int, resource_quantity: float, resource_remaining: float, num_commons: int,
+    def __init__(self, destination_id: int, resource_quantity: float, resource_remaining: float, num_agents: int,
                  resource_shares: Dict[int, float] = None,
                  aggregate_adjustment: Dict[int, float] = None,
                  round_finished: bool = False):
@@ -26,7 +26,7 @@ class CommonsPerception(object):
         self.resource_quantity = resource_quantity
         self.resource_remaining = resource_remaining
 
-        self.num_commons = num_commons
+        self.num_agents = num_agents
 
         self.resource_shares = resource_shares
         self.aggregate_adjustment = aggregate_adjustment
@@ -163,8 +163,8 @@ class CommonsEnvironment(Environment):
         if share_total >= 1:
             return 0
 
-        score = sum([math.log(K * share) for share in resource_shares])
-        score += len(resource_shares) * math.log(K - K*share_total)
+        score = sum([math.log(K * share) for share in resource_shares if K*share >= 1])
+        score += len(resource_shares) * math.log(K - K*share_total) if K - K*share_total >= 1 else 0
 
         return score
 
@@ -180,24 +180,38 @@ class CommonsEnvironment(Environment):
         if share_total >= 1:
             return 0
 
-        return math.log(K * agent_share) + math.log(K - K*share_total)
+        personal_resource_consumption = K * agent_share
+        remaining_resource = K - K * share_total
+
+        personal_utility = math.log(personal_resource_consumption) if personal_resource_consumption >= 1 else 0
+        remaining_utility = math.log(remaining_resource) if remaining_resource >= 1 else 0
+
+        return personal_utility + remaining_utility
 
 
     def __deviated_utility(self, deviation: float = None):
         """
         Computes an allowed deviation at each turn, whereby agent utilities for the same resource amount and list of
         societal shares may differ by a given amount
-        :param deviation:
+        :param deviation: deviation percentage
         :return:
         """
         def utility(K: float, agent_share, all_shares: List[float]) -> float:
             agent_utility = self.__agent_utility(K, agent_share, all_shares=all_shares)
             if deviation:
-                agent_utility += deviation
+                utility_deviation = deviation * agent_utility
+                agent_utility += utility_deviation
 
             return agent_utility
 
         return utility
+    
+    def __adjust_shares(self, agent_shares: Dict[int, float] = None, adjustments: Dict[int, float] = None):
+        if adjustments:
+            for agent_id in agent_shares:
+                agent_shares[agent_id] += adjustments.get(agent_id, 0)
+            
+        return agent_shares
 
 
     def __get_utility_functions(self) -> Dict[Agent, Callable[[float, float, List[float]], float]]:
@@ -217,12 +231,11 @@ class CommonsEnvironment(Environment):
                 agent_indexes = [idx for idx in agent_indexes if not idx in positive_change_indexes]
                 negative_change_indexes = random.sample(agent_indexes, num_changes)
 
-                deviation = self._fraction_deviation * self.resource_quantity / (2 * num_agents)
                 for idx in positive_change_indexes:
-                    utility_dict[self.commons_agents[idx]] = self.__deviated_utility(deviation=deviation)
+                    utility_dict[self.commons_agents[idx]] = self.__deviated_utility(deviation=self._fraction_deviation)
 
                 for idx in negative_change_indexes:
-                    utility_dict[self.commons_agents[idx]] = self.__deviated_utility(deviation=-deviation)
+                    utility_dict[self.commons_agents[idx]] = self.__deviated_utility(deviation=-self._fraction_deviation)
 
         return utility_dict
 
@@ -273,12 +286,7 @@ class CommonsEnvironment(Environment):
                 else:
                     round_finished = all([act.no_action for act in agent_actions.values()])
                     if round_finished:
-                        # inform all agents that round has finished
-                        for agent in self.commons_agents:
-                            agent.inform_round_finished(adjust_round,
-                                                        CommonsPerception(agent.id, self.resource_quantity,
-                                                                          remaining_resource, num_agents,
-                                                                          round_finished=True))
+                        
                         # finish the adjustment rounds
                         break
                     else:
@@ -293,24 +301,30 @@ class CommonsEnvironment(Environment):
                             agg_adjustment[agent.id] = sum(adjustment_list) / len(adjustment_list)
 
                 adjust_round += 1
-
-            # if all adjustment rounds have finished, compute remaining resource and real societal utility score
+            
+            # if all adjustment rounds have finished, adjust shares as result of negotiations,
+            # compute remaining resource and real societal utility score
+            agent_shares = self.__adjust_shares(agent_shares=agent_shares, adjustments=agg_adjustment)
             remaining_resource = max(.0, self.resource_quantity * (1.0 - sum(agent_shares.values())))
-            utility_score = self.__commons_utility(self.resource_quantity, list(agent_shares.values()))
-            self._utility_scores.append(utility_score)
-
+            
             # then inform the agents of the round end
+            utility_score = 0
             agent_utilites = {}
             logged_shares = {}
             for agent in self.commons_agents:
                 agent.inform_round_finished(adjust_round, CommonsPerception(agent.id, self.resource_quantity,
-                                                            remaining_resource, num_agents, round_finished=True))
+                                                            remaining_resource, num_agents,
+                                                            aggregate_adjustment=agg_adjustment,
+                                                            resource_shares=agent_shares,
+                                                            round_finished=True))
                 agent_utilites[agent] = self.__agent_utility(self.resource_quantity, agent_shares[agent.id],
                                                              list(agent_shares.values()))
+                utility_score += agent_utilites[agent]
                 logged_shares[agent] = agent_shares[agent.id]
 
             self._individual_utility_scores.append(agent_utilites)
             self._individual_shares.append(logged_shares)
+            self._utility_scores.append(utility_score)
 
             # update resource quantity and increment round counter
             self.resource_quantity = remaining_resource
