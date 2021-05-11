@@ -1,0 +1,95 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+\newcommand{\languagesetting}{english}
+
+\newcommand{\elementsroot}{../../}
+\usepackage{\elementsroot/quick}
+\usepackage{\elementsroot/sendbox}
+
+
+\newcommand{\makepageTwo}{\newpage\label{res}}
+\newcommand{\pageTwo}{page \pageref{res}}
+
+% TODO year + ID
+%\newcommand{\reslink}{\rf{http://cs.curs.pub.ro/2015/mod/folder/view.php?id=5498}}
+
+\begin{document}
+% TODO
+\spk{-2ex}\dotitle[12.05.2021]{MAS: Activity 9 \textendash\ Auctions and Negotiations}{Alexandru Sorici}
+\spk{2ex}5\vskip-5ex
+
+The Multi-Agent Oriented Programming (MAOP) Paradigm is well suited for application scenarios that involve interactions between multiple parties that have a stake in a given objective, though possibly different interests.
+
+This assignment aims to make use of two interactions that are typically encountered in the multi-agent literature: auctions and negotiations.
+
+\section{Problem Description}
+The problem description that makes use of these interactions is that of \textit{a company (ACME) that wants to build a new headquarters and needs to sign contracts for the following items: (i) structural design, (ii) building, (iii) electrical and plumbing work, (iv) interior design.}
+
+The contracting occurs by the following assumptions and rules:
+\begin{itemize}
+	\item The contracting company is called ACME and it \textbf{has a given budget each construction item};
+	\item The contractors are companies A -- F. Each company is specialized in a subset of the 4 construction tasks (e.g. structural design and interior design, building and electrical/plumbing work, etc). Each company has a \textbf{lower limit for the price at which it will take on each type of construction task} -- its actual cost.
+	
+	\item The goal of ACME is to \textbf{complete the headquarters} and to \textbf{save as much money as possible} from the overall budget.
+	
+	\item The goal of each contractor company is to participate in \textbf{at least one contract}, since this builds up serious reputation. At the same time, each company wants to ensure it turns in as much of a profit as possible.
+\end{itemize}
+
+To perform the contracting for each task, ACME employs the following strategy:
+\begin{itemize}
+	\item It first holds a variation of the \textbf{Dutch (descending auction)} (\textbf{see Negotiation lecture}) to establish a preliminary list of companies who are willing to do the task at a given price. The variation is that ACME will start from a low price and continuously raise it, until one (or more) companies place a bid. ACME is allowed to raise the price \textbf{at most 3 times}. 
+
+	\item With each interested company, ACME enters a negotiation using the \textbf{monotonic concession protocol} (see Negotiation lecture) to try and bring the price further down. ACME holds at most 3 rounds of concession. After the negotiations, it will select the company with the lowest price (or one randomly if each has the same offer).
+\end{itemize}
+
+\section{Multi-Agent Modeling}
+%
+The game setup follows these indications:
+\begin{itemize}
+	\item Model ACME and each of the contractor companies as an agent.
+	\item The environment keeps a record of each agent and knows what services they can provide (i.e. structural design, building, electrical and plumbing work, interior design).
+	%	
+	\item The environment maintains a state of two different interaction phases: \textit{auction phase} and \textit{negotiation phase}. 
+	%
+	\item In the \textit{auction phase} the environment keeps track of current auction item, current auction round, companies that have secured a spot to the negotiation phase
+	%
+	\item In the \textit{negotiation phase} the environment will facilitate an \texttt{MonotonicConcessionNegotiation} instance for each of the agents that were selected by ACME during the \textit{auction phase}.
+		\begin{itemize}
+			\item ACME is always the initiator of the negotiation. ACME will try to start at lower price, and bring it back up to the value of auction phase.
+			\item Company agents are always the responders in the negotiation protocol. Company agents decide if they accept lowering the received budget for the construction item.
+			\item Company agents \textbf{do not know} the offers made in the negotiation by other agents, but they \textbf{do know} how many agents have entered the negotiation.
+		\end{itemize}
+	
+\end{itemize}
+
+
+\section{Other specifications}
+Each student has to implement a strategy for ACME and a strategy used by company agents.
+Final lab evaluation will be \textbf{team based} one: two solutions will be pitted against each other - one student gives the strategy for ACME, while the other one gives the strategy for the company agents.
+The evaluation file will be based on a config similar to test setup number 2 (see below).
+
+
+For testing purposes, you have two test setups. In both setups, ACME has the following budget:
+\begin{itemize}\footnotesize
+	\item structural design: 5000
+	\item building: 10000
+	\item electric/plumbing: 4000
+	\item interior design: 5000
+\end{itemize}
+
+For the contractors:
+\begin{itemize}
+	\item In the first one (\texttt{config-companies-1.cfg}) you have a manual setup of the company cost values for each contracting stage.
+		\begin{itemize}
+			\item company A: structural design - 5000, interior design: 5000
+			\item company B: structural design - 4000, building - 8000
+			\item company C: building - 9000, interior design: 3500
+			\item company D: building - 7500, electric and plumbing - 2500
+			\item company E: building - 7200, electric and plumbing - 3700
+			\item company F: structural design - 4000, interior design: 4000
+		\end{itemize}
+	%
+	\item In the second one (\texttt{config-companies-2.cfg}), the cost values are distributed to companies according to a \emph{normal distribution}, with mean equal to the budget of ACME and a standard deviation of 20\% from the max budget (e.g. for building, mean = 10000, std = 2000). For this second setup, \textit{both ACME and the contractor companies know how budget and costs are distributed!}
+	
+\end{itemize}
+
+\end{document}
