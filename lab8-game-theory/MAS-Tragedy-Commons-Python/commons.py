@@ -280,7 +280,7 @@ class CommonsEnvironment(Environment):
                                                       agent_utilities=ag_utilites)
                     act = agent.negotiation_response(adjust_round, ag_perception,
                                                      utility_func=agent_utility_funcs[agent])
-                    if act.consumption_adjustment and abs(sum(act.consumption_adjustment.values())) < 1e-9:
+                    if act.consumption_adjustment and abs(sum(act.consumption_adjustment.values())) > 1e-9:
                         print("[Illegal adjustment] Agent %s has proposed an adjustment for other"
                               " agents that does not have a 0 balance" % agent.name)
                         round_finished = True

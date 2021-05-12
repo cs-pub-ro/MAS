@@ -306,12 +306,13 @@ class CommonsEnvironment(Environment):
                         # aggregate the results by averaging adjustment proposals
                         agent_shares = dict([(agent.id, act.resource_share) for (agent, act) in agent_actions.items()])
 
+                        nr_submitted_adjustments = sum([1 for act in agent_actions.values() if not act.no_action])
                         agg_adjustment = {}
                         for agent in self.commons_agents:
                             adjustment_list = list(filter(lambda x: x != 0, [act.consumption_adjustment[agent.id]
                                                     for act in agent_actions.values()]))
                             if adjustment_list:
-                                agg_adjustment[agent.id] = sum(adjustment_list) / len(adjustment_list)
+                                agg_adjustment[agent.id] = sum(adjustment_list) / nr_submitted_adjustments
                             else:
                                 agg_adjustment[agent.id] = 0
 
