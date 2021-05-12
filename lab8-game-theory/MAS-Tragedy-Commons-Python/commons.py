@@ -280,7 +280,7 @@ class CommonsEnvironment(Environment):
                                                       agent_utilities=ag_utilites)
                     act = agent.negotiation_response(adjust_round, ag_perception,
                                                      utility_func=agent_utility_funcs[agent])
-                    if act.consumption_adjustment and abs(sum(act.consumption_adjustment.values())) > 1e-9:
+                    if act.consumption_adjustment and abs(sum(act.consumption_adjustment.values())) < 1e-9:
                         print("[Illegal adjustment] Agent %s has proposed an adjustment for other"
                               " agents that does not have a 0 balance" % agent.name)
                         round_finished = True
@@ -300,13 +300,14 @@ class CommonsEnvironment(Environment):
                         # it means at least some agent proposes an adjustment
                         # aggregate the results by averaging adjustment proposals
                         agent_shares = dict([(agent.id, act.resource_share) for (agent, act) in agent_actions.items()])
-
+                        
+                        nr_submitted_adjustments = sum([1 for act in agent_actions.values() if not act.no_action])
                         agg_adjustment = {}
                         for agent in self.commons_agents:
                             adjustment_list = list(filter(lambda x: x != 0, [act.consumption_adjustment[agent.id]
                                                     for act in agent_actions.values()]))
                             if adjustment_list:
-                                agg_adjustment[agent.id] = sum(adjustment_list) / len(adjustment_list)
+                                agg_adjustment[agent.id] = sum(adjustment_list) / nr_submitted_adjustments
                             else:
                                 agg_adjustment[agent.id] = 0
 
