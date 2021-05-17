@@ -128,30 +128,30 @@ class MyEnv(object):
         # define observation probability for the left action
         #      Obs:2    Obs:3
         # S0   0.0      1.0
-        # S1   0.0      1.0
+        # S1   1.0      0.0
         # S2   1.0      0.0
         # S3   1.0      0.0
-        # S4   1.0      0.0
+        # S4   0.0      1.0
         O_left = np.array([[
             [0.0, 1.0],
-            [0.0, 1.0],
             [1.0, 0.0],
             [1.0, 0.0],
-            [1.0, 0.0]
+            [1.0, 0.0],
+            [0.0, 1.0]
         ]])
 
         # define observation probability for the right action
         #      Obs:2    Obs:3
-        # S0   1.0      0.0
+        # S0   0.0      1.0
         # S1   1.0      0.0
         # S2   1.0      0.0
-        # S3   0.0      1.0
+        # S3   1.0      0.0
         # S4   0.0      1.0
         O_right = np.array([[
-            [1.0, 0.0],
-            [1.0, 0.0],
-            [1.0, 0.0],
             [0.0, 1.0],
+            [1.0, 0.0],
+            [1.0, 0.0],
+            [1.0, 0.0],
             [0.0, 1.0]
         ]])
 
@@ -225,12 +225,6 @@ class MyEnv(object):
         self.num_steps += 1
         self.done = (self.num_steps == self.max_num_steps)
 
-        # get the next observation. this is stochastic
-        obs = np.random.choice(
-            a=[Obs.O2, Obs.O3],
-            p=self.O[action][self.__state]
-        )
-
         # get the reward. this is deterministic
         reward = self.R[action][self.__state]
 
@@ -239,6 +233,13 @@ class MyEnv(object):
             a=list(States),
             p=self.T[action][self.__state]
         )
+
+        # get the next observation. this is stochastic
+        obs = np.random.choice(
+            a=[Obs.O2, Obs.O3],
+            p=self.O[action][self.__state]
+        )
+
 
         # construct info
         info = {"num_steps": self.num_steps}
