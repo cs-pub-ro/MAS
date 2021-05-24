@@ -244,7 +244,7 @@ class BuildingEnvironment(Environment):
                             if best_response_ag is None:
                                 best_response = negotiation_result
                                 best_response_ag = negotiation_conv.partner
-                            elif negotiation_result > best_response:
+                            elif negotiation_result < best_response:
                                 best_response = negotiation_result
                                 best_response_ag = negotiation_conv.partner
 
@@ -287,7 +287,7 @@ class BuildingEnvironment(Environment):
                                     if best_response_ag is None:
                                         best_response = negotiation_result
                                         best_response_ag = negotiation_conv.partner
-                                    elif negotiation_result > best_response:
+                                    elif negotiation_result < best_response:
                                         best_response = negotiation_result
                                         best_response_ag = negotiation_conv.partner
                                 else:
