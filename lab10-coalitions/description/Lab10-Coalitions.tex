@@ -1,0 +1,72 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+\newcommand{\languagesetting}{english}
+\newcommand{\geometrysetting}{margin=2cm}
+\newcommand{\elementsroot}{../../}
+\usepackage{\elementsroot/quick}
+\usepackage{\elementsroot/sendbox}
+\newcommand{\noulem}{}\renewcommand{\picLocal}{}
+
+\newcommand{\makepageTwo}{\newpage\label{res}}\newcommand{\pageTwo}{page \pageref{res}}
+
+\begin{document}
+% TODO
+\spk{-3ex}\dotitle[26.05.2021]{MAS: Activity 10 \textendash\ Agent Coalitions}{Alexandru Sorici}
+\spk{1.5ex}\vskip-3ex
+
+In this activity, the objective is to implement mechanisms for forming \textit{stable} agent coalitions, whereby the purpose of forming the coalition is that of obtaining a higher utility, than is possible for each individual agent (given its resources).
+
+The problem setting is that of a series of \textit{buyer} agents, each with constrained resources (money). There agents must obtain one instance (or part thereof) \textit{from each type} of a set or products. For each product type, there are several available versions, each with a value and a cost.
+
+The agent resource are given in such a way, that each agent cannot single-handedly acquire instances of each product type. Therefore, the agents have to form coalitions, where they \textit{cooperate} in order to buy higher-valued product items.
+%
+\bigskip
+%
+While doing so, two aspects have to be observed:
+%
+\begin{itemize}
+	\item The formed coalition of agents has to be \emph{stable}, i.e. no agent must have the \textit{rational} incentive to leave this coalition for another.
+	\item To maintain stability, \emph{fairness} of the value distribution among coalition agents has to be ensured. This means that agents have to receive a total value that is \textit{proportional} to their \textit{contribution} to the coalition.
+\end{itemize}
+%
+\bigskip
+%
+\textbf{Agent Setup.}
+
+The problem setup is similar to the Ice-Cream Game from slide 20 of the attached class presentation. However, in our setup there are two product types (\texttt{r1} and \texttt{r2}), each with a given lineup of product instances, characterized by value and price.
+%
+The agents must consider the \textit{fairness} distribution for each product type (i.e. a value distribution proportional, \textit{for that product type}, with the contribution \textit{for that product type}).
+
+The \textbf{value} of a coalition is 0 if it cannot buy both types of products. If it can buy both types of products, the value of the coalition is given by the sum of values of the product instances.
+
+The task of the agents is to interact with one another and propose that they form a coalition. 
+To simplify the task of carrying out coalition formation negotiations, the agents are given turns in which they opt to \textit{join} a new coalition or to \textit{disband} their existing one. \textbf{At any moment, an agent can be part of a single coalition.}
+
+
+Each coalition has a \textit{coalition leader}, which is the agent that negotiates on behalf of the coalition. The \textit{coalition leader} is the agent which has \textit{the highest amount of resources (money)} in the coalition. If two agents have the same amount of resources, they are sorted in alphabetical order of their names.
+
+%
+\bigskip
+%
+\textbf{Communication Setup.}
+The \texttt{Environment} manages the following interactions: 
+
+\begin{itemize}
+	\item It handles a token to the \textit{buyer} agents in \textit{decreasing} order of their resources (money). Only the agent which has a token is allowed to carry out actions. 
+	%
+	\item The actions available to an agent are: (i)\textbf{request} to join a coalition, (ii)\textbf{disband} a coalition \textbf{of which it is a member}, (iii)\textbf{accept the request}, made by another agent, to join the coalition, (iv)\textbf{deny the request}, made by another agent, to join a coalition (by also providing a counter offer product share)
+	%
+	\item A \textbf{request to join a coalition} is made by specifying a \textit{product\_share}: the \textit{amount of money} the agent wants to contribute to \textit{each type} of resource; the \textit{value} the agent wants to obtain from each product type
+	%
+	\item At each turn buyer agent:
+		\begin{itemize}
+			\item receive a list of \texttt{CoalitionActions} that include: \textbf{requests} from other agents to join the coalition of the current buyer agent, with a given product share offer; \textbf{denials} to join a coalition and a counter offer for the product share
+			%
+			\item submit a (possibly empty) list of actions to be carried out by the environment, from the set mentioned previously
+		\end{itemize}
+\end{itemize}
+
+The simulation ends when there is no change in coalition formations, from one token pass to the other, or when \textbf{MAX\_ROUNDS} of token passes have elapsed.
+
+% \sendbox{alex.sorici+mas@gmail.com}
+% \sendbox[a]{cs@andreiolaru.ro}
+\end{document}
