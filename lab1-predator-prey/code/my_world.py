@@ -252,7 +252,7 @@ class MyEnvironment(HuntingEnvironment):
         action they return.
         """
         """
-        STAGE 1: enerate perceptions for all agents, based on the state of the environment at the beginning of this
+        STAGE 1: generate perceptions for all agents, based on the state of the environment at the beginning of this
         turn
         """
         agent_perceptions = {}
@@ -339,10 +339,10 @@ class MyEnvironment(HuntingEnvironment):
 
 class Tester(object):
 
-    NUM_PREDATORS = 2
-    NUM_PREY = 1
+    NUM_PREDATORS = 4
+    NUM_PREY = 10
 
-    WIDTH = 10
+    WIDTH = 12
     HEIGHT = 10
 
     DELAY = 0.1
