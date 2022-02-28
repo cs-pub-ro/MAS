@@ -293,7 +293,6 @@ class CommonsEnvironment(Environment):
                 else:
                     round_finished = all([act.no_action for act in agent_actions.values()])
                     if round_finished:
-                        
                         # finish the adjustment rounds
                         break
                     else:

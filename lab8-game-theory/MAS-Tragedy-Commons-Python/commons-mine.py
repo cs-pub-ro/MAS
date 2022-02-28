@@ -152,8 +152,6 @@ class CommonsEnvironment(Environment):
                         agent = klass(agent_id)
                         self.add_agent(agent)
 
-
-
     def __commons_utility(self, K: float, resource_shares: List[float]) -> float:
         """
         Computes the society wide utility, given an amount of resource K and the shares wanted by each agent
@@ -164,10 +162,10 @@ class CommonsEnvironment(Environment):
         share_total = sum(resource_shares)
         if share_total >= 1:
             return 0
-
-        score = sum([math.log(K * share) for share in resource_shares])
-        score += len(resource_shares) * math.log(K - K*share_total)
-
+    
+        score = sum([math.log(K * share) for share in resource_shares if K * share >= 1])
+        score += len(resource_shares) * math.log(K - K * share_total) if K - K * share_total >= 1 else 0
+    
         return score
 
     def __agent_utility(self, K: float, agent_share: float, all_shares: List[float]) -> float:
@@ -181,24 +179,31 @@ class CommonsEnvironment(Environment):
         share_total = sum(all_shares)
         if share_total >= 1:
             return 0
-
-        return math.log(K * agent_share) + math.log(K - K*share_total)
-
+    
+        personal_resource_consumption = K * agent_share
+        remaining_resource = K - K * share_total
+    
+        personal_utility = math.log(personal_resource_consumption) if personal_resource_consumption >= 1 else 0
+        remaining_utility = math.log(remaining_resource) if remaining_resource >= 1 else 0
+    
+        return personal_utility + remaining_utility
 
     def __deviated_utility(self, deviation: float = None):
         """
         Computes an allowed deviation at each turn, whereby agent utilities for the same resource amount and list of
         societal shares may differ by a given amount
-        :param deviation:
+        :param deviation: deviation percentage
         :return:
         """
+    
         def utility(K: float, agent_share, all_shares: List[float]) -> float:
             agent_utility = self.__agent_utility(K, agent_share, all_shares=all_shares)
             if deviation:
-                agent_utility += deviation
-
+                utility_deviation = deviation * agent_utility
+                agent_utility += utility_deviation
+        
             return agent_utility
-
+    
         return utility
 
 
