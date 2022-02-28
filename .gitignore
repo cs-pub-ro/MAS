@@ -154,3 +154,6 @@ dmypy.json
 
 # PyCharm
 .idea/
+
+# Archives
+*.zip
