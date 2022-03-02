@@ -146,7 +146,8 @@ class HuntingEnvironment(AbstractGridEnvironment):
 
             if ok:
                 generated += 1
-                self.__add_wildlife_agent(WildLifeAgentData(predator_agents.pop(), agent_type=WildLifeAgentData.PREDATOR, grid_position=pos))
+                self.__add_wildlife_agent(WildLifeAgentData(predator_agents.pop(),
+                                                            agent_type=WildLifeAgentData.PREDATOR, grid_position=pos))
 
             attempts -= 1
 

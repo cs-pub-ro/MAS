@@ -199,8 +199,10 @@ class MyPrey(WildLifeAgent):
 
 class MyPredator(WildLifeAgent):
 
-    def __init__(self):
+    def __init__(self, map_width=None, map_height=None):
         super(MyPredator, self).__init__(WildLifeAgentData.PREDATOR)
+        self.map_width = map_width
+        self.map_height = map_height
 
     def response(self, perceptions):
         """
@@ -233,7 +235,7 @@ class MyEnvironment(HuntingEnvironment):
         prey = []
 
         for i in range(num_predators):
-            predators.append(MyPredator())
+            predators.append(MyPredator(map_width=w, map_height=h))
 
         for i in range(num_prey):
             prey.append(MyPrey())
@@ -342,7 +344,7 @@ class Tester(object):
     NUM_PREDATORS = 4
     NUM_PREY = 10
 
-    WIDTH = 12
+    WIDTH = 15
     HEIGHT = 10
 
     DELAY = 0.1
