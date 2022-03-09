@@ -4,18 +4,10 @@ import random
 
 """ ======================================== Blocksworld agent ======================================== """
 class BlocksWorldPerception(Perception):
-
-    # def __init__(self, stack: BlockStack, current_station: Station, previous_action_succeeded: bool):
-    #     super(BlocksWorldPerception, self).__init__()
-    #
-    #     self.visible_stack = stack
-    #     self.current_station = current_station
-    #     self.previous_action_succeeded = previous_action_succeeded
-
-    def __init__(self, stacks: List[BlockStack], current_station: Station, previous_action_succeeded: bool):
+    def __init__(self, current_world: BlocksWorld, current_station: Station, previous_action_succeeded: bool):
         super(BlocksWorldPerception, self).__init__()
 
-        self.visible_stacks = stacks
+        self.current_world = current_world
         self.current_station = current_station
         self.previous_action_succeeded = previous_action_succeeded
 
@@ -124,8 +116,9 @@ class BlocksWorldEnvironment(Environment):
         for adata in self.agents_data:
             agent_station = adata.station
             world_stacks = self.worldstate.get_stacks()
+            current_world = self.worldstate.clone()
 
-            act = adata.agent.response(BlocksWorldPerception(world_stacks, agent_station,
+            act = adata.agent.response(BlocksWorldPerception(current_world, agent_station,
                                                              adata.previous_action_succeeded))
             print("Agent %s opts for %s" % (str(adata.agent), str(act)))
 
