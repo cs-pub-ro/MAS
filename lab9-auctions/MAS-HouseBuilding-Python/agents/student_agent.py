@@ -20,6 +20,9 @@ class MyACMEAgent(HouseOwnerAgent):
     def provide_negotiation_offer(self, negotiation_item: str, partner_agent: str, negotiation_round: int) -> float:
         pass
 
+    def notify_partner_response(self, response_msg: NegotiationMessage) -> None:
+        pass
+
     def notify_negotiation_winner(self, negotiation_item: str, winning_agent: str, winning_offer: float) -> None:
         pass
 
