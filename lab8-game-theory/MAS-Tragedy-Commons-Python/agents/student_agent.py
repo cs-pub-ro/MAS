@@ -15,9 +15,11 @@ class StudentAgent(CommonsAgent):
     def negotiation_response(self, negotiation_round: int, perception: CommonsPerception,
                              utility_func: Callable[[float, float, List[float]], float]) -> AgentAction:
         # TODO: return an AgentAction, whereby the agent can specify what his revised consumption share is, as
-        #  well as what he thinks other agents should consume, in the form of a consumption_adjustment dict
-        #  Attention: if you specify a consumption_adjustment dict, you have to make sure that it sums up to 0
-        #  (i.e. your agent thinks somebody should conusme less and somebody more)
+        # well as what he thinks other agents should consume, in the form of a consumption_adjustment dict
+        #
+        # Attention: you must pay attention to the fact the the consumption_adjustment dict may indicate altering
+        # the agent_shares in such a way that their sum is greater than 1 or smaller than 0. 
+        # You must avoid this, as it will lead to the consumption round being aborted and all agents receiving a 0 utility.
         return AgentAction(self.id, resource_share=0, no_action=True)
 
     def inform_round_finished(self, negotiation_round: int, perception: CommonsPerception):

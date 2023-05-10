@@ -180,6 +180,11 @@ class CommonsEnvironment(Environment):
         :param all_shares:
         :return:
         """
+        # First put in some safeguards. If the agent share is negative, set it to 0. Map all negative values in the all_shares list to 0
+        if agent_share < 0:
+            agent_share = 0
+        all_shares = [0 if share < 0 else share for share in all_shares]
+
         share_total = sum(all_shares)
         if share_total >= 1:
             return 0
@@ -278,15 +283,8 @@ class CommonsEnvironment(Environment):
                                                       aggregate_adjustment=agg_adjustment,
                                                       resource_shares=agent_shares,
                                                       agent_utilities=ag_utilites)
-                    act = agent.negotiation_response(adjust_round, ag_perception,
-                                                     utility_func=agent_utility_funcs[agent])
-                    if act.consumption_adjustment and abs(sum(act.consumption_adjustment.values())) > 1e-9:
-                        print("[Illegal adjustment] Agent %s has proposed an adjustment for other"
-                              " agents that does not have a 0 balance" % agent.name)
-                        round_finished = True
-                        break
                     agent_actions[agent] = agent.negotiation_response(adjust_round, ag_perception,
-                                                                      utility_func=agent_utility_funcs[agent])
+                                                     utility_func=agent_utility_funcs[agent])
 
                 if round_finished:
                     break
@@ -303,7 +301,7 @@ class CommonsEnvironment(Environment):
                         nr_submitted_adjustments = sum([1 for act in agent_actions.values() if not act.no_action])
                         agg_adjustment = {}
                         for agent in self.commons_agents:
-                            adjustment_list = list(filter(lambda x: x != 0, [act.consumption_adjustment[agent.id]
+                            adjustment_list = list(filter(lambda x: x != 0, [act.consumption_adjustment.get(agent.id, 0)
                                                     for act in agent_actions.values()]))
                             if adjustment_list:
                                 agg_adjustment[agent.id] = sum(adjustment_list) / nr_submitted_adjustments
