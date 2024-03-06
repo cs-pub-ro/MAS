@@ -1,5 +1,6 @@
 from base import Agent, Action, Perception
 from representation import GridRelativeOrientation, GridOrientation
+from communication import SocialAction
 from hunting import HuntingEnvironment, WildLifeAgentData, WildLifeAgent
 from enum import Enum
 import pandas as pd
@@ -204,12 +205,27 @@ class MyPredator(WildLifeAgent):
         self.map_width = map_width
         self.map_height = map_height
 
-    def response(self, perceptions):
+    def response(self, perceptions: MyAgentPerception) -> MyAction:
         """
-        TODO your response function for the predator agent
+        TODO your response function for the predator agent with NO communication
         :param perceptions:
         :return:
         """
+        return random.choice([MyAction.NORTH, MyAction.SOUTH, MyAction.EAST, MyAction.WEST])
+
+
+class MyPredatorWithCommunication(MyPredator):
+
+    def __init__(self, map_width=None, map_height=None):
+        super(MyPredatorWithCommunication, self).__init__(map_width, map_height)
+
+    def response(self, perceptions: MyAgentPerception) -> SocialAction:
+        """
+        TODO your response function for the predator agent WITH communication
+        :param perceptions:
+        :return:
+        """
+        return SocialAction(random.choice([MyAction.NORTH, MyAction.SOUTH, MyAction.EAST, MyAction.WEST]))
 
 
 
@@ -220,7 +236,7 @@ class MyEnvironment(HuntingEnvironment):
     PREY_RANGE = 2
     PREDATOR_RANGE = 3
 
-    def __init__(self, w, h, num_predators, num_prey, rand_seed = 42, prey_kill_times = None):
+    def __init__(self, predator_agent_type, w, h, num_predators, num_prey, rand_seed = 42, prey_kill_times = None):
         """
         Default constructor. This should call the initialize methods offered by the super class.
         """
@@ -237,7 +253,7 @@ class MyEnvironment(HuntingEnvironment):
         prey = []
 
         for i in range(num_predators):
-            predators.append(MyPredator(map_width=w, map_height=h))
+            predators.append(predator_agent_type(map_width=w, map_height=h))
 
         for i in range(num_prey):
             prey.append(MyPrey())
@@ -362,14 +378,14 @@ class MyEnvironment(HuntingEnvironment):
 
 class Tester(object):
 
-    def __init__(self, num_predators=4, num_prey=10, width=15, height=10, rand_seed = 42, delay=0.1):
+    def __init__(self, predator_agent_type = MyPredatorWithCommunication, num_predators=4, num_prey=10, width=15, height=10, rand_seed = 42, delay=0.1):
         self.num_predators = num_predators
         self.num_prey = num_prey
         self.width = width
         self.height = height
         self.delay = delay
 
-        self.env = MyEnvironment(self.width, self.height, self.num_predators, self.num_prey, rand_seed=rand_seed)
+        self.env = MyEnvironment(predator_agent_type, self.width, self.height, self.num_predators, self.num_prey, rand_seed=rand_seed)
         self.make_steps()
 
     def make_steps(self):
@@ -385,25 +401,28 @@ class Tester(object):
 
 
 if __name__ == "__main__":
-    NUM_TESTS = 20
+    tester = Tester(rand_seed=42, delay=0.1)
+    step_count, prey_kill_times = tester.make_steps()
+
+    # NUM_TESTS = 20
     
-    step_count_list = []
-    prey_kill_times_list = []
+    # step_count_list = []
+    # prey_kill_times_list = []
 
-    for i in range(NUM_TESTS):
-        tester = Tester(rand_seed=42+i, delay=0.1)
-        step_count, prey_kill_times = tester.make_steps()
+    # for i in range(NUM_TESTS):
+    #     tester = Tester(rand_seed=42+i, delay=0.1)
+    #     step_count, prey_kill_times = tester.make_steps()
 
-        step_count_list.append(step_count)
-        prey_kill_times_list.append(prey_kill_times)
+    #     step_count_list.append(step_count)
+    #     prey_kill_times_list.append(prey_kill_times)
 
-    # Make an analysis of the min, max, median step counts and standard deviation as a describe call
-    print("Step count analysis")
-    print(pd.Series(step_count_list).describe())
+    # # Make an analysis of the min, max, median step counts and standard deviation as a describe call
+    # print("Step count analysis")
+    # print(pd.Series(step_count_list).describe())
 
-    # Make an analysis of the most common kill times as a scatter plot
-    print("Prey kill times analysis")
-    prey_kill_times = [item for sublist in prey_kill_times_list for item in sublist]
-    df = pd.DataFrame(prey_kill_times, columns=["Step", "Prey killed"])
-    df.plot(kind="scatter", x="Step", y="Prey killed", xlabel="Step", ylabel="Prey killed")
+    # # Make an analysis of the most common kill times as a scatter plot
+    # print("Prey kill times analysis")
+    # prey_kill_times = [item for sublist in prey_kill_times_list for item in sublist]
+    # df = pd.DataFrame(prey_kill_times, columns=["Step", "Prey killed"])
+    # df.plot(kind="scatter", x="Step", y="Prey killed", xlabel="Step", ylabel="Prey killed")
 
