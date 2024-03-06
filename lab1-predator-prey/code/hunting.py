@@ -256,8 +256,9 @@ class HuntingEnvironment(AbstractGridEnvironment):
         for predator_data in self._predator_agents:
             predator_dist = predator_data.grid_position.get_distance_to(prey_pos)
 
-            if predator_dist <= 2:
+            if predator_dist <= 1:
                 has_neighbour_predator = True
+                num_close_predators += 1
                 predators = [str(predator_data.linked_agent)]
 
             elif predator_dist <= 2:
@@ -280,9 +281,15 @@ class HuntingEnvironment(AbstractGridEnvironment):
         distance of 1, or at least two predators, each at a Manhattan distance of 2 or less from the prey
         :return:
         """
+        num_dead_prey = 0
+        if self._prey_agents:
+            num_dead_prey = len([self.__is_dead_prey(prey_data) for prey_data in self._prey_agents])
+
         self._prey_agents[:] = [prey_data for prey_data in self._prey_agents if not self.__is_dead_prey(prey_data)]
         self._agents[:] = [ag_data for ag_data in self._agents if ag_data.agent_type == WildLifeAgentData.PREDATOR or
                            not self.__is_dead_prey(ag_data)]
+        
+        return num_dead_prey
 
 
     def goals_completed(self):

@@ -2,6 +2,7 @@ from base import Agent, Action, Perception
 from representation import GridRelativeOrientation, GridOrientation
 from hunting import HuntingEnvironment, WildLifeAgentData, WildLifeAgent
 from enum import Enum
+import pandas as pd
 
 import time, random
 
@@ -127,7 +128,6 @@ class MyPrey(WildLifeAgent):
 
     def response(self, perceptions):
         """
-        TODO: your code here
         :param perceptions: The perceptions of the agent at each step
         :return: The `Action' that your agent takes after perceiving the environment at each step
         """
@@ -220,15 +220,17 @@ class MyEnvironment(HuntingEnvironment):
     PREY_RANGE = 2
     PREDATOR_RANGE = 3
 
-    def __init__(self, w, h, num_predators, num_prey):
+    def __init__(self, w, h, num_predators, num_prey, rand_seed = 42, prey_kill_times = None):
         """
         Default constructor. This should call the initialize methods offered by the super class.
         """
-        rand_seed = 42
-        # rand_seed =  datetime.now()
+        if not prey_kill_times:
+            self.prey_kill_times = []
+        else:
+            self.prey_kill_times = prey_kill_times
+        self.step_count = 0
 
         print("Seed = %i" % rand_seed)
-
         super(MyEnvironment, self).__init__()
 
         predators = []
@@ -333,26 +335,42 @@ class MyEnvironment(HuntingEnvironment):
                     print("Agent %s tried to go through a wall!" % str(predator_data))
 
 
+        # increment the step count
+        self.step_count += 1
+
         """
-        At the end of the turn remove the dead prey
+        At the end of the turn remove the dead prey. If any prey was killed, add a tuple containing the 
+        current step count and the number of prey killed at this step to the list of prey kill times.
         """
-        self.remove_dead_prey()
+        num_prey_killed = self.remove_dead_prey()
+        if num_prey_killed > 0:
+            self.prey_kill_times.append((self.step_count, num_prey_killed))
+
+
+    def get_step_count(self):
+        """
+        :return: the number of steps that have been executed in the environment
+        """
+        return self.step_count
+    
+    def get_prey_kill_times(self):
+        """
+        :return: a list of tuples containing the step count and the number of prey killed at that step
+        """
+        return self.prey_kill_times
 
 
 class Tester(object):
 
-    NUM_PREDATORS = 4
-    NUM_PREY = 10
+    def __init__(self, num_predators=4, num_prey=10, width=15, height=10, rand_seed = 42, delay=0.1):
+        self.num_predators = num_predators
+        self.num_prey = num_prey
+        self.width = width
+        self.height = height
+        self.delay = delay
 
-    WIDTH = 15
-    HEIGHT = 10
-
-    DELAY = 0.1
-
-    def __init__(self):
-        self.env = MyEnvironment(Tester.WIDTH, Tester.HEIGHT, Tester.NUM_PREDATORS, Tester.NUM_PREY)
+        self.env = MyEnvironment(self.width, self.height, self.num_predators, self.num_prey, rand_seed=rand_seed)
         self.make_steps()
-
 
     def make_steps(self):
         while not self.env.goals_completed():
@@ -360,11 +378,32 @@ class Tester(object):
 
             print(self.env)
 
-            time.sleep(Tester.DELAY)
-
+            time.sleep(self.delay)
+        
+        # return the number of steps and the prey kill times
+        return self.env.get_step_count(), self.env.get_prey_kill_times()
 
 
 if __name__ == "__main__":
-    tester = Tester()
-    tester.make_steps()
+    NUM_TESTS = 20
+    
+    step_count_list = []
+    prey_kill_times_list = []
+
+    for i in range(NUM_TESTS):
+        tester = Tester(rand_seed=42+i, delay=0.1)
+        step_count, prey_kill_times = tester.make_steps()
+
+        step_count_list.append(step_count)
+        prey_kill_times_list.append(prey_kill_times)
+
+    # Make an analysis of the min, max, median step counts and standard deviation as a describe call
+    print("Step count analysis")
+    print(pd.Series(step_count_list).describe())
+
+    # Make an analysis of the most common kill times as a scatter plot
+    print("Prey kill times analysis")
+    prey_kill_times = [item for sublist in prey_kill_times_list for item in sublist]
+    df = pd.DataFrame(prey_kill_times, columns=["Step", "Prey killed"])
+    df.plot(kind="scatter", x="Step", y="Prey killed", xlabel="Step", ylabel="Prey killed")
 
