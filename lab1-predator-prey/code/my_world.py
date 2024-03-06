@@ -385,6 +385,9 @@ class Tester(object):
         self.height = height
         self.delay = delay
 
+        # reset the agent counter for generating unique agent ids
+        WildLifeAgent.agent_counter = 0
+
         self.env = MyEnvironment(predator_agent_type, self.width, self.height, self.num_predators, self.num_prey, rand_seed=rand_seed)
         self.make_steps()
 
