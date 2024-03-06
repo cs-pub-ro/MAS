@@ -378,7 +378,7 @@ class MyEnvironment(HuntingEnvironment):
 
 class Tester(object):
 
-    def __init__(self, predator_agent_type = MyPredatorWithCommunication, num_predators=4, num_prey=10, width=15, height=10, rand_seed = 42, delay=0.1):
+    def __init__(self, predator_agent_type = MyPredator, num_predators=4, num_prey=10, width=15, height=10, rand_seed = 42, delay=0.1):
         self.num_predators = num_predators
         self.num_prey = num_prey
         self.width = width
@@ -401,7 +401,7 @@ class Tester(object):
 
 
 if __name__ == "__main__":
-    tester = Tester(rand_seed=42, delay=0.1)
+    tester = Tester(predator_agent_type=MyPredator, rand_seed=42, delay=0.1)
     step_count, prey_kill_times = tester.make_steps()
 
     # NUM_TESTS = 20
@@ -410,7 +410,7 @@ if __name__ == "__main__":
     # prey_kill_times_list = []
 
     # for i in range(NUM_TESTS):
-    #     tester = Tester(rand_seed=42+i, delay=0.1)
+    #     tester = Tester(predator_agent_type=MyPredator, rand_seed=42+i, delay=0.1)
     #     step_count, prey_kill_times = tester.make_steps()
 
     #     step_count_list.append(step_count)
