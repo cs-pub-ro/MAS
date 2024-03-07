@@ -1,4 +1,6 @@
 from base import Action
+from typing import List
+from hunting import WildLifeAgent
 
 class AgentMessage(object):
 
@@ -8,7 +10,7 @@ class AgentMessage(object):
         self.content = content
 
     @staticmethod
-    def filter_messages_for(all_messages, agent):
+    def filter_messages_for(all_messages: List['AgentMessage'], agent: WildLifeAgent):
         """
         helper method to filter from a set of messages only those for a specified agent.
         :param all_messages: the messages to filter.

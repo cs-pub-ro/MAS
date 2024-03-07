@@ -283,7 +283,7 @@ class HuntingEnvironment(AbstractGridEnvironment):
         """
         num_dead_prey = 0
         if self._prey_agents:
-            num_dead_prey = len([self.__is_dead_prey(prey_data) for prey_data in self._prey_agents])
+            num_dead_prey = sum([self.__is_dead_prey(prey_data) for prey_data in self._prey_agents])
 
         self._prey_agents[:] = [prey_data for prey_data in self._prey_agents if not self.__is_dead_prey(prey_data)]
         self._agents[:] = [ag_data for ag_data in self._agents if ag_data.agent_type == WildLifeAgentData.PREDATOR or

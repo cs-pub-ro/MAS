@@ -1,9 +1,10 @@
 from base import Agent, Action, Perception
 from representation import GridRelativeOrientation, GridOrientation
-from communication import SocialAction
+from communication import SocialAction, AgentMessage
 from hunting import HuntingEnvironment, WildLifeAgentData, WildLifeAgent
 from enum import Enum
 import pandas as pd
+import matplotlib.pyplot as plt
 
 import time, random
 
@@ -211,8 +212,71 @@ class MyPredator(WildLifeAgent):
         :param perceptions:
         :return:
         """
-        return random.choice([MyAction.NORTH, MyAction.SOUTH, MyAction.EAST, MyAction.WEST])
+        agent_pos = perceptions.agent_position
+        probability_map = ProbabilityMap()
+        probability_map.put(MyAction.NORTH,  MyPrey.UP_PROB)
+        probability_map.put(MyAction.SOUTH, MyPrey.DOWN_PROB)
+        probability_map.put(MyAction.WEST, MyPrey.LEFT_PROB)
+        probability_map.put(MyAction.EAST, MyPrey.RIGHT_PROB)
 
+        for obstacle_pos in perceptions.obstacles:
+            if agent_pos.get_distance_to(obstacle_pos) > 1:
+                continue
+
+            relative_orientation = agent_pos.get_simple_relative_orientation(obstacle_pos)
+            if relative_orientation == GridRelativeOrientation.FRONT:
+                probability_map.remove(MyAction.NORTH)
+
+            elif relative_orientation == GridRelativeOrientation.BACK:
+                probability_map.remove(MyAction.SOUTH)
+
+            elif relative_orientation == GridRelativeOrientation.RIGHT:
+                probability_map.remove(MyAction.EAST)
+
+            elif relative_orientation == GridRelativeOrientation.LEFT:
+                probability_map.remove(MyAction.WEST)
+
+        ## save available moves
+        available_moves = ProbabilityMap(existing_map=probability_map)
+
+        ## examine actions which should be followed to catch the prey
+        ## this means that if the prey is in one of the 8 directions, the predator should remove the opposite direction
+        for (_, prey_pos) in perceptions.nearby_prey:
+            relative_pos = agent_pos.get_simple_relative_orientation(prey_pos)
+
+            if relative_pos == GridRelativeOrientation.FRONT:
+                probability_map.remove(MyAction.SOUTH)
+
+            elif relative_pos == GridRelativeOrientation.FRONT_LEFT:
+                probability_map.remove(MyAction.SOUTH)
+                probability_map.remove(MyAction.EAST)
+
+            elif relative_pos == GridRelativeOrientation.FRONT_RIGHT:
+                probability_map.remove(MyAction.SOUTH)
+                probability_map.remove(MyAction.WEST)
+
+            elif relative_pos == GridRelativeOrientation.LEFT:
+                probability_map.remove(MyAction.EAST)
+
+            elif relative_pos == GridRelativeOrientation.RIGHT:
+                probability_map.remove(MyAction.WEST)
+
+            elif relative_pos == GridRelativeOrientation.BACK:
+                probability_map.remove(MyAction.NORTH)
+
+            elif relative_pos == GridRelativeOrientation.BACK_LEFT:
+                probability_map.remove(MyAction.NORTH)
+                probability_map.remove(MyAction.EAST)
+
+            elif relative_pos == GridRelativeOrientation.BACK_RIGHT:
+                probability_map.remove(MyAction.NORTH)
+                probability_map.remove(MyAction.WEST)
+
+        if not probability_map.empty():
+            return probability_map.choice()
+        else:
+            return available_moves.choice()
+        
 
 class MyPredatorWithCommunication(MyPredator):
 
@@ -292,7 +356,20 @@ class MyEnvironment(HuntingEnvironment):
                                                              nearby_prey=prey)
 
         ## TODO: create perceptions for predator agents, including messages in the `message_box`
+        for predator_data in self._predator_agents:
+            nearby_obstacles = self.get_nearby_obstacles(predator_data.grid_position, MyEnvironment.PREDATOR_RANGE)
+            nearby_predators = self.get_nearby_predators(predator_data.grid_position, MyEnvironment.PREDATOR_RANGE)
+            nearby_prey = self.get_nearby_prey(predator_data.grid_position, MyEnvironment.PREDATOR_RANGE)
 
+            predators = [(ag_data.linked_agent.id, ag_data.grid_position) for ag_data in nearby_predators]
+            prey = [(ag_data.linked_agent.id, ag_data.grid_position) for ag_data in nearby_prey]
+
+            agent_perceptions[predator_data] = MyAgentPerception(agent_position=predator_data.grid_position,
+                                                                 obstacles=nearby_obstacles,
+                                                                 nearby_predators=predators,
+                                                                 nearby_prey=prey,
+                                                                 messages=AgentMessage.filter_messages_for(self.message_box, predator_data.linked_agent))
+        
         """
         STAGE 2: call response for each agent to obtain desired actions
         """
@@ -301,6 +378,8 @@ class MyEnvironment(HuntingEnvironment):
         for prey_data in self._prey_agents:
             agent_actions[prey_data] = prey_data.linked_agent.response(agent_perceptions[prey_data])
 
+        for predator_data in self._predator_agents:
+            agent_actions[predator_data] = predator_data.linked_agent.response(agent_perceptions[predator_data])
 
         """
         STAGE 3: apply the agents' actions in the environment
@@ -406,6 +485,8 @@ class Tester(object):
 if __name__ == "__main__":
     tester = Tester(predator_agent_type=MyPredator, rand_seed=42, delay=0.1)
     step_count, prey_kill_times = tester.make_steps()
+    print("Step count: ", step_count)
+    print("Prey kill times: ", prey_kill_times)
 
     # NUM_TESTS = 20
     
@@ -427,5 +508,6 @@ if __name__ == "__main__":
     # print("Prey kill times analysis")
     # prey_kill_times = [item for sublist in prey_kill_times_list for item in sublist]
     # df = pd.DataFrame(prey_kill_times, columns=["Step", "Prey killed"])
-    # df.plot(kind="scatter", x="Step", y="Prey killed", xlabel="Step", ylabel="Prey killed")
+    # df.plot(kind="scatter", x="Step", y="Prey killed", xlabel="Step", ylabel="Prey killed", yticks=range(0, 11, 1))
+    # plt.show()
 
