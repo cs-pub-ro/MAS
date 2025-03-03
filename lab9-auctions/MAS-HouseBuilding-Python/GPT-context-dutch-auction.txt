@@ -1,0 +1,340 @@
+https://github.com/TIGER-AI-Lab/MAmmoTH
+https://huggingface.co/microsoft/phi-2
+https://huggingface.co/TIGER-Lab/MAmmoTH-Coder-7B
+
+
+ACME - round 1
+--------------
+You are a company wishing to build a new headquarters. 
+You act as a contractor for four separate development stages: 1. structural design, 2. building, 3. plumbing and electrics, 4. interior design. 
+You have six companies to choose from for each stage. 
+You start a reverse dutch auction for each stage, meaning that you start from a lower budget and increase it until 
+one or more companies accept the offer.
+You have a maximum budget for each stage.
+You have at most 3 rounds of offers for each stage. You can increase the budget by how much you want for each round, 
+but you cannot exceed the maximum budget per stage.
+You must secure at least one company for each stage, otherwise you will lose the project. 
+You do not want to lose the project.
+If you can, you will try to secure more than one company for each stage, in order to have a backup plan.
+If you can, you will try to save as much money as possible.
+
+Your budget for each stage is:
+```
+budget = {
+    "structural design": 5000,
+    "building": 10000,
+    "plumbing and electrics": 4000,
+    "interior design": 5000
+}
+```
+
+The negotation status is as follows:
+  - current_stage: "structural design"
+  - current_round: 1
+  - maximum_rounds: 3
+  - maximum_budget: 5000
+  - number_of_companies: 6
+  - companies: ["Company A", "Company B", "Company C", "Company D", "Company E", "Company F"]
+  - previous_offer: None
+  - accepting_companies: []
+
+Give the value for the `offered_budget` variable for the construction stage and the current round.
+Return the `offered_budget` in the following JSON dictionary format:
+```
+{
+    "construction_stage": "structural design",
+    "budget": <offered_budget>,
+    "round": <current_round>
+}
+```
+
+
+ACME - round 2
+--------------
+You are a company wishing to build a new headquarters. 
+You act as a contractor for four separate development stages: 1. structural design, 2. building, 3. plumbing and electrics, 4. interior design. 
+You have six companies to choose from for each stage. 
+You start a reverse dutch auction for each stage, meaning that you start from a lower budget and increase it until 
+one or more companies accept the offer.
+You have a maximum budget for each stage.
+You have at most 3 rounds of offers for each stage. You can increase the budget by how much you want for each round, 
+but you cannot exceed the maximum budget per stage.
+You must secure at least one company for each stage, otherwise you will lose the project. 
+You do not want to lose the project.
+If you can, you will try to secure more than one company for each stage, in order to have a backup plan.
+If you can, you will try to save as much money as possible.
+
+Your budget for each stage is:
+```
+budget = {
+    "structural design": 5000,
+    "building": 10000,
+    "plumbing and electrics": 4000,
+    "interior design": 5000
+}
+```
+
+The negotation status is as follows:
+  - current_stage: "structural design"
+  - current_round: 3
+  - maximum_rounds: 3
+  - maximum_budget: 5000
+  - number_of_companies: 6
+  - companies: ["Company A", "Company B", "Company C", "Company D", "Company E", "Company F"]
+  - previous_offer: 4000
+  - accepting_companies: []
+
+Give the value for the `offered_budget` variable for the construction stage and the current round.
+Return the `offered_budget` in the following format:
+```
+{
+    "construction_stage": "structural design",
+    "budget": <offered_budget>,
+    "round": <current_round>
+}
+```
+
+
+
+Company A
+---------
+You are a construction company participating in a reverse Dutch auction for a project to build a new headquarters.
+There are four development stages: 1. structural design, 2. building, 3. plumbing and electrics, 4. interior design.
+You specialize in the following stages: structural design, building, plumbing and electrics.
+Your cost per stages in which you specialize is as follows:
+```
+cost_per_stage = {
+    "structural design": 3602,
+    "building": 11000,
+    "plumbing and electrics": 3900
+}
+```
+
+You participate in a reverse dutch auction for each stage, meaning that the auction starts from a lower budget and increases 
+until a company accepts the offer.
+You have a minimum cost for each stage in which you specialize.
+You have at most 3 rounds per stage in which you can make a bid. 
+Your goal is to secure at least one contract for your company. The overall revenue (over all stages for which you bid) must be positive.
+You cannot have overal negative revenue. 
+Winning a contract is more important than maximizing revenue.
+If you can, you will try to secure more than one contract.
+If you can, you will try to win as much revenue as possible.
+
+
+The negotation status is as follows:
+  - current_stage: "structural design"
+  - current_round: 1
+  - maximum_rounds: 3
+  - current_offer: 3000
+  - previous_offer: None
+  - won_contracts: []
+  - revenue: 0
+
+Give your decision for the current round and stage in the following format:
+```
+{
+    "construction_stage": "structural design",
+    "participation_decision": <true or false>,
+    "round": <current_round>
+}
+
+
+Company B
+---------
+
+
+Company C
+---------
+
+
+Company D
+---------
+
+
+Company E
+---------
+
+
+Company F
+---------
+
+
+
+Context 1: 
+You are a company wishing to build a new headquarters. 
+You act as a contractor for four separate development stages: 1. structural design, 2. building, 3. plumbing and electrics, 4. interior design. 
+You have six companies to choose from for each stage. 
+You start a reverse dutch auction for each stage, meaning that you start from a lower budget and increase it until 
+one or more companies accept the offer.
+You have a maximum budget for each stage.
+You have at most 3 rounds of offers for each stage. You can increase the budget by how much you want for each round, 
+but you cannot exceed the maximum budget per stage.
+You must secure at least one company for each stage, otherwise you will lose the project. 
+You do not want to lose the project.
+If you can, you will try to secure more than one company for each stage, in order to have a backup plan.
+If you can, you will try to save as much money as possible.
+
+Your budget for each stage is:
+```
+budget = {
+    "structural design": 5000,
+    "building": 10000,
+    "plumbing and electrics": 4000,
+    "interior design": 5000
+}
+```
+
+The negotation status is as follows:
+  - current_stage: "structural design"
+  - current_round: 1
+  - maximum_rounds: 3
+  - maximum_budget: 5000
+  - number_of_companies: 6
+  - companies: ["Company A", "Company B", "Company C", "Company D", "Company E", "Company F"]
+  - offer_made: no
+
+Give the value for the `offered_budget` variable for the construction stage and the current round.
+Return the `offered_budget` in the following format:
+```
+{
+    "construction_stage": "structural design",
+    "budget": <offered_budget>,
+    "round": <current_round>
+}
+```
+
+Answer 1: 
+In a reverse Dutch auction, the initial budget is low, and you increase it until at least one company accepts the offer. Given that you have a maximum of three rounds to secure a company and that your maximum budget for "structural design" is 5000, you need to increase the offer strategically. Since this is the first round, you could start low to see if you can attract interest without exceeding the budget or needing additional rounds.
+
+A reasonable initial offer for the first round could be 60% of the maximum budget. With a maximum budget of 5000, that would be 3000.
+
+Here's your output for the current round and stage:
+
+json
+{
+    "construction_stage": "structural design",
+    "budget": 3000,
+    "round": 1
+}
+
+Context 2:
+You are a company wishing to build a new headquarters. 
+You act as a contractor for four separate development stages: 1. structural design, 2. building, 3. plumbing and electrics, 4. interior design. 
+You have six companies to choose from for each stage. 
+You start a reverse dutch auction for each stage, meaning that you start from a lower budget and increase it until 
+one or more companies accept the offer.
+You have a maximum budget for each stage.
+You have at most 3 rounds of offers for each stage. You can increase the budget by how much you want for each round, 
+but you cannot exceed the maximum budget per stage.
+You must secure at least one company for each stage, otherwise you will lose the project. 
+You do not want to lose the project.
+If you can, you will try to secure more than one company for each stage, in order to have a backup plan.
+If you can, you will try to save as much money as possible.
+
+Your budget for each stage is:
+```
+budget = {
+    "structural design": 5000,
+    "building": 10000,
+    "plumbing and electrics": 4000,
+    "interior design": 5000
+}
+```
+
+The negotation status is as follows:
+  - current_stage: "structural design"
+  - current_round: 2
+  - maximum_rounds: 3
+  - maximum_budget: 5000
+  - number_of_companies: 6
+  - companies: ["Company A", "Company B", "Company C", "Company D", "Company E", "Company F"]
+  - previous_offer: 3000
+  - accepting_companies: []
+
+Give the value for the `offered_budget` variable for the construction stage and the current round.
+Return the `offered_budget` in the following format:
+```
+{
+    "construction_stage": "structural design",
+    "budget": <offered_budget>,
+    "round": <current_round>
+}
+```
+
+Answer 2:
+
+Given that the first offer of 3000 did not attract any companies, it's time to increase the offer for the second round. Since you're aiming to secure at least one company within three rounds, the increase should be significant enough to attract interest while keeping you within the maximum budget.
+
+One strategy could be to increase by half of the difference between the previous offer and the maximum budget. This strategy allows a substantial increase to encourage companies to accept while keeping room for further adjustments in the final round, if needed.
+
+The previous offer was 3000, and the maximum budget is 5000. The increase would be half of (5000 - 3000), which is (2000 / 2) = 1000. Adding this increase to the previous offer leads to an offered budget of 4000 for the second round.
+
+Here's your output for the current round and stage:
+
+json
+
+{
+    "construction_stage": "structural design",
+    "budget": 4000,
+    "round": 2
+}
+
+
+Context 3:
+You are a company wishing to build a new headquarters. 
+You act as a contractor for four separate development stages: 1. structural design, 2. building, 3. plumbing and electrics, 4. interior design. 
+You have six companies to choose from for each stage. 
+You start a reverse dutch auction for each stage, meaning that you start from a lower budget and increase it until 
+one or more companies accept the offer.
+You have a maximum budget for each stage.
+You have at most 3 rounds of offers for each stage. You can increase the budget by how much you want for each round, 
+but you cannot exceed the maximum budget per stage.
+You must secure at least one company for each stage, otherwise you will lose the project. 
+You do not want to lose the project.
+If you can, you will try to secure more than one company for each stage, in order to have a backup plan.
+If you can, you will try to save as much money as possible.
+
+Your budget for each stage is:
+```
+budget = {
+    "structural design": 5000,
+    "building": 10000,
+    "plumbing and electrics": 4000,
+    "interior design": 5000
+}
+```
+
+The negotation status is as follows:
+  - current_stage: "structural design"
+  - current_round: 3
+  - maximum_rounds: 3
+  - maximum_budget: 5000
+  - number_of_companies: 6
+  - companies: ["Company A", "Company B", "Company C", "Company D", "Company E", "Company F"]
+  - previous_offer: 4000
+  - accepting_companies: []
+
+Give the value for the `offered_budget` variable for the construction stage and the current round.
+Return the `offered_budget` in the following format:
+```
+{
+    "construction_stage": "structural design",
+    "budget": <offered_budget>,
+    "round": <current_round>
+}
+```
+
+Answer 3:
+Since this is the final round of the reverse Dutch auction and the previous offer of 4000 did not attract any companies, you need to ensure that at least one company accepts your offer to avoid losing the project. This requires offering a budget that is close to or at the maximum to increase the chances of acceptance.
+
+Given that the maximum budget for this stage is 5000, the offered budget for the third and final round should be the maximum budget.
+
+Here's your output for the current round and stage:
+
+json
+
+{
+    "construction_stage": "structural design",
+    "budget": 5000,
+    "round": 3
+}

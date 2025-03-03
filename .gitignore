@@ -157,3 +157,10 @@ dmypy.json
 
 # Archives
 *.zip
+
+# solutii studenti
+*/solutii-studenti
+*/student-solutions
+
+# keys
+*key.txt
