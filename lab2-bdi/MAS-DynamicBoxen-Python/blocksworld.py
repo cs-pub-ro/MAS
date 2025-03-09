@@ -525,7 +525,33 @@ class BlocksWorld(object):
             self.stacks.append(BlockStack(blocks=tower))
 
 
+    def contains_world(self, other: 'BlocksWorld') -> bool:
+        """
+        Checks if this world contains another world. Typically this is used to check if the current world contains the final desired state of the blocks
+        :param other: the other world to check
+        """
+        if not isinstance(other, BlocksWorld):
+            return False
+        
+        for other_stack in other.get_stacks():
+            found_stack = False
+            for stack in self.stacks:
+                if stack == other_stack:
+                    found_stack = True
+                    break
+            
+            if not found_stack:
+                return False
+        
+        return True
+
+        
+
     def get_all_blocks(self) -> Set[Block]:
+        """
+        Returns all blocks that have ever existed in this world (including those that are currently locked, taken by the adversarial environment 
+        or in the hand of an agent)
+        """
         return set(list(self.all_blocks))
 
 
@@ -678,3 +704,16 @@ class BlocksWorld(object):
         ret = []
         for stack in self.stacks:
             ret.extend(stack.get_predicates())
+
+
+if __name__ == "__main__":
+    ## Test world containment
+    with open("tests/0e-large/sf.txt") as input_stream:
+        desired_world = BlocksWorld(input_stream=input_stream)
+        print(str(desired_world))
+
+    with open("tests/0e-large/sf_test.txt") as input_stream:
+        test_world = BlocksWorld(input_stream=input_stream)
+        print(str(test_world))
+
+        print("Test world contains desired world: %s" % str(test_world.contains_world(desired_world)))

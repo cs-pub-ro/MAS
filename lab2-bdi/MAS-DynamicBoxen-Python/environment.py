@@ -4,12 +4,13 @@ import random
 
 """ ======================================== Blocksworld agent ======================================== """
 class BlocksWorldPerception(Perception):
-    def __init__(self, current_world: BlocksWorld, current_station: Station, previous_action_succeeded: bool):
+    def __init__(self, current_world: BlocksWorld, current_station: Station, previous_action_succeeded: bool, holding_block: str = None):
         super(BlocksWorldPerception, self).__init__()
 
         self.current_world = current_world
         self.current_station = current_station
         self.previous_action_succeeded = previous_action_succeeded
+        self.holding_block = holding_block
 
 
 class BlocksWorldAgent(Agent):
@@ -111,7 +112,7 @@ class BlocksWorldEnvironment(Environment):
     def step(self) -> bool:
         print("\n".join([str(adata) for adata in self.agents_data]))
 
-        completed = False
+        completed = 0
 
         for adata in self.agents_data:
             agent_station = adata.station
@@ -119,7 +120,7 @@ class BlocksWorldEnvironment(Environment):
             current_world = self.worldstate.clone()
 
             act = adata.agent.response(BlocksWorldPerception(current_world, agent_station,
-                                                             adata.previous_action_succeeded))
+                                                             adata.previous_action_succeeded, adata.holding))
             print("Agent %s opts for %s" % (str(adata.agent), str(act)))
 
             # set previous action succeeded as False, initially
@@ -213,6 +214,10 @@ class BlocksWorldEnvironment(Environment):
             else:
                 raise RuntimeError("Should not be here: action not recognized %s" % act.get_type())
 
+        ## if we have a single agent, check if the blocks are in the desired final state and then mark the game as completed
+        if len(self.agents_data) == 1:
+            if self.worldstate.contains_world(self.agents_data[0].target_state):
+                completed = 1
 
         if completed == len(self.agents_data):
             return True
@@ -300,7 +305,7 @@ class DynamicEnvironment(BlocksWorldEnvironment):
     def _perform_dynamic_action(self) -> None:
         from my import Tester
 
-        if random.random() < Tester.DYNAMICITY:
+        if random.random() < Tester.DYNAMICS_PROB:
             dyna = DynamicAction.pick()
 
             # print("[DYNAMIC ENV] selected action: " + str(dyna))
