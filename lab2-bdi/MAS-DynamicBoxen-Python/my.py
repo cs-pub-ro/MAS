@@ -41,7 +41,7 @@ class MyAgent(BlocksWorldAgent):
             return self.current_intention.pop(0)
         else:
             ## the agent has to set a new current desire and plan to achieve it
-            self.current_desire, self.current_intention = self.plan(perception.current_world)
+            self.current_desire, self.current_intention = self.plan()
 
         ## If there is an action in the current intention, pop it and return it
         if len(self.current_intention) > 0:
