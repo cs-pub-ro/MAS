@@ -34,11 +34,13 @@ class Estimator(object):
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr = lr)
 
     def _initialize_weights_and_bias(self, state_dim = 4, hidden_dim = 100):
-        # TODO 2: Initialize the weights and biases of the first layer
+        # Initialize the weights and biases of the first layer
         # the first weight is a state_dim x hidden_dim matrix. 
         # Initialize each row with a normal distribution with mean 0 and standard deviation sqrt((i+1) * 0.5), where i is the row index.
         # the bias is uniformly distributed between 0 and 2 pi
-        pass
+        for i in range(state_dim):
+            torch.nn.init.normal_(self.model[0].weight[i], mean = 0, std = np.sqrt((i+1) * 0.5))
+        torch.nn.init.uniform_(self.model[0].bias, a = 0, b = 2 * np.pi)
         
     def update(self, state, y):
         y_pred = self.model(torch.Tensor(state))
@@ -57,7 +59,7 @@ class Estimator(object):
 
 
 def select_action(state, epsilon, model):
-    ## TODO 3: Implement the epsilon-greedy policy
+    ## TODO 2: Implement the epsilon-greedy policy
     action = env.action_space.sample()
     # action = ...
     ## END TODO
@@ -91,7 +93,7 @@ def q_learning(
             next_state, reward, done, _, _ = step_res
             episode_reward += reward
 
-            # TODO 4: Implement the Q-learning update rule, using the model.predict and model.update functions
+            # TODO 3: Implement the Q-learning update rule, using the model.predict and model.update functions
             # predict the q values for the current state
             # q_values = ...
 
@@ -151,11 +153,13 @@ if __name__ == '__main__':
     env.reset(seed=42)
 
     spec = {
-        'activation': 'sigmoid',
-        'epsilon': 0.1,
-        'gamma': 1.0,
-        'lr': 0.0005,
         'episodes': 1000,
+        'gamma': 1.0,
+        
+        # to experiment with
+        'activation': 'sigmoid',
+        'lr': 0.0005,
+        'epsilon': 0.1,
         'decay': False
     }
 
