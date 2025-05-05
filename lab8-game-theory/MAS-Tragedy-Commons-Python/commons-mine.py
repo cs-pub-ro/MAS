@@ -4,6 +4,9 @@ from typing import List, Dict, Callable
 import yaml
 import random
 import math
+import matplotlib.pyplot as plt
+import matplotlib.cm as pl
+import numpy as np
 
 class CommonsPerception(object):
     """
@@ -332,7 +335,96 @@ class CommonsEnvironment(Environment):
 
 
     def goals_completed(self):
-        return self._finished or self._crt_round >= self._total_rounds
+        if self._finished or self._crt_round >= self._total_rounds:
+            self.__generate_plots()
+            return True
+
+        return False
+
+    
+    def __generate_plots(self):
+        # style
+        plt.style.use('seaborn-darkgrid')
+
+        # create Individual Utility plot
+        fig_individual_utils = plt.figure("Individual Utilities")
+        cumultated_agent_utilities = dict([(ag, []) for ag in self.commons_agents])
+        for scores in self._individual_utility_scores:
+            for ag in scores:
+                if cumultated_agent_utilities[ag]:
+                    cumultated_agent_utilities[ag].append(scores[ag] + cumultated_agent_utilities[ag][-1])
+                else:
+                    cumultated_agent_utilities[ag].append(scores[ag])
+
+        colors = pl.cm.jet(np.linspace(0, 1, len(cumultated_agent_utilities)))
+
+        num_color = 0
+        for ag in cumultated_agent_utilities:
+            plt.plot(range(1, len(cumultated_agent_utilities[ag]) + 1), cumultated_agent_utilities[ag], marker='o',
+                     color=colors[num_color], linewidth=1, alpha=0.9, label=ag.name)
+            num_color += 1
+
+        # Add legend
+        plt.legend(loc=2, ncol=2)
+
+        # Add titles
+        plt.title("Agent individual utilities", loc='left', fontsize=12, fontweight=0, color='orange')
+        plt.xlabel("Round")
+        plt.ylabel("Utility")
+        #plt.savefig("plots/individual_utility_history.png")
+
+        # create comparison plot between real and ideal common utility
+        common_real_utilities = []
+        for utility in self._utility_scores:
+            if common_real_utilities:
+                common_real_utilities.append(utility + common_real_utilities[-1])
+            else:
+                common_real_utilities.append(utility)
+
+        common_ideal_utilities = []
+        for utility in self._ideal_utility_scores:
+            if common_ideal_utilities:
+                common_ideal_utilities.append(utility + common_ideal_utilities[-1])
+            else:
+                common_ideal_utilities.append(utility)
+
+        fig_common_utils = plt.figure("Common Utilities")
+        plt.plot(range(1, len(common_ideal_utilities) + 1), common_ideal_utilities, marker='o',
+                 color="blue", linewidth=2, alpha=0.9, label="ideal")
+        plt.plot(range(1, len(common_real_utilities) + 1), common_real_utilities, marker='o',
+                 color="red", linewidth=2, alpha=0.9, label="real")
+        # Add legend
+        plt.legend(loc=2, ncol=1)
+        # Add titles
+        plt.title("Common utilities", loc='left', fontsize=12, fontweight=0, color='orange')
+        plt.xlabel("Round")
+        plt.ylabel("Utility")
+        #plt.savefig("plots/common_utility_history.png")
+
+        # create share history plot
+        fig_share_history = plt.figure("Individual Share History")
+        share_history = dict([(ag, []) for ag in self.commons_agents])
+
+        for shares in self._individual_shares:
+            for ag in shares:
+                share_history[ag].append(shares[ag])
+
+        num_color = 0
+        for ag in share_history:
+            plt.plot(range(1, len(share_history[ag]) + 1), share_history[ag], marker='o',
+                     color=colors[num_color], linewidth=1, alpha=0.9, label=ag.name)
+            num_color += 1
+
+        # Add legend
+        plt.legend(loc=2, ncol=2)
+
+        # Add titles
+        plt.title("Agent share history", loc='left', fontsize=12, fontweight=0, color='orange')
+        plt.xlabel("Round")
+        plt.ylabel("Share (0..1)")
+        # plt.savefig("plots/share_history.png")
+
+        plt.show()
 
 
     def __str__(self):
