@@ -253,22 +253,26 @@ class BlocksWorldEnvironment(Environment):
 
 class DynamicAction(object):
     STASH       = "stash"
-    STASH_PROB  = 0.15
+    STASH_PROB  = 0.2
 
     UNSTASH     = "unstash"
-    UNSTASH_PROB = 0.25
+    UNSTASH_PROB = 0.2
 
     DROP        = "drop"
     DROP_PROB   = 0.3
 
     TELEPORT    = "teleport"
-    TELEPORT_PROB = 0.3
+    TELEPORT_PROB = 0.0
+
+    LOCK = "lock"
+    LOCK_PROB = 0.3
 
     ACTIONS = [
         (STASH, STASH_PROB),
         (UNSTASH, UNSTASH_PROB),
         (DROP, DROP_PROB),
-        (TELEPORT, TELEPORT_PROB)
+        (TELEPORT, TELEPORT_PROB),
+        (LOCK, LOCK_PROB)
     ]
 
     def __init__(self, type, probability):
@@ -363,11 +367,27 @@ class DynamicEnvironment(BlocksWorldEnvironment):
                 self.worldstate.stack(b, s1.get_top_block())
 
                 print(DynamicEnvironment.HEAD + " [ %s ] : %s -> %s." % (str(b), str(s), str(s1)))
+            elif dyna.type == DynamicAction.LOCK:
+                s = self._pick_stack(True, False, observed_stacks)
+                if not s:
+                    return
+                # get the first block that is not locked
+                b = None
+                for block in s.get_blocks():
+                    if not s.is_locked(block):
+                        b = block
+                        break
+                
+                # pick a random block
+                # b = random.choice(list(s.get_blocks()))
+
+                # lock that block
+                if b:
+                    self.worldstate.lock(b)
+                    print(DynamicEnvironment.HEAD + " [ %s ] -> lock." % str(b))
 
             else:
                 raise RuntimeError("Unrecognized dynamic action type: %s" % dyna.type)
-
-
 
 
     def _pick_stack(self, can_be_single: bool, can_be_locked: bool, observed_stacks: Set[BlockStack]) -> BlockStack:

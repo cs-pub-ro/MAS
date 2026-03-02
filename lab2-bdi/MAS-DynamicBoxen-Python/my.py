@@ -123,14 +123,14 @@ class MyAgent(BlocksWorldAgent):
 
 
 class Tester(object):
-    STEP_DELAY = 0.5
+    STEP_DELAY = 0.2
     TEST_SUITE = "tests/0e-large/"
 
     EXT = ".txt"
     SI  = "si"
     SF  = "sf"
 
-    DYNAMICS_PROB = .5
+    DYNAMICS_PROB = 1.0
 
     AGENT_NAME = "*A"
 
