@@ -626,7 +626,12 @@ class BlocksWorld(object):
         world.stacks = []
 
         for stack in self.stacks:
-            world.stacks.append(BlockStack(blocks = stack.get_blocks(), locked=stack.get_locked_blocks()))
+            locked = stack.get_locked_blocks()
+            unlocked = [b for b in stack.get_blocks() if b not in locked]
+            new_stack = BlockStack(base=unlocked[0] if unlocked else locked[0])
+            new_stack.blocks = deque(unlocked)
+            new_stack.locked_blocks = list(locked)
+            world.stacks.append(new_stack)
 
         return world
 

@@ -4,13 +4,16 @@ import random
 
 """ ======================================== Blocksworld agent ======================================== """
 class BlocksWorldPerception(Perception):
-    def __init__(self, current_world: BlocksWorld, current_station: Station, previous_action_succeeded: bool, holding_block: str = None):
+    def __init__(self, current_world: BlocksWorld, current_station: Station,
+                 previous_action_succeeded: bool, holding_block: str = None,
+                 previous_action_message: str = None):
         super(BlocksWorldPerception, self).__init__()
 
         self.current_world = current_world
         self.current_station = current_station
         self.previous_action_succeeded = previous_action_succeeded
         self.holding_block = holding_block
+        self.previous_action_message = previous_action_message
 
 
 class BlocksWorldAgent(Agent):
@@ -69,15 +72,17 @@ class AgentData(object):
         self.station = initial_station
 
         self.previous_action_succeeded = True
+        self.previous_action_message = "Initial perception: no action executed yet"
         self.holding = None
 
 
     def __str__(self):
-        return "Agent %s at %s holding %s; previous action: %s" \
+        return "Agent %s at %s holding %s; previous action: %s (%s)" \
                % (str(self.agent),
                   str(self.station),
                   str(self.holding) if self.holding else "none",
-                  "successful" if self.previous_action_succeeded else "failed")
+                  "successful" if self.previous_action_succeeded else "failed",
+                  self.previous_action_message)
 
 
     def __eq__(self, other):
@@ -89,12 +94,22 @@ class AgentData(object):
 
 class BlocksWorldEnvironment(Environment):
 
-    def __init__(self, world: BlocksWorld):
+    def __init__(self, world: BlocksWorld, verbose: bool = True):
         self.worldstate = world.clone()
         self.agents_data = []
+        self.verbose = verbose
 
         idx = ord("0")
         self.station = Station(str(chr(idx)))
+
+
+    def _log_action_outcome(self, adata: AgentData, act: BlocksWorldAction):
+        if not self.verbose:
+            return
+
+        status = "SUCCESS" if adata.previous_action_succeeded else "FAILED"
+        print("[ACTION] Agent %s -> %s => %s | %s" %
+              (str(adata.agent), str(act), status, adata.previous_action_message))
 
 
     def add_agent(self, agent: BlocksWorldAgent, desires, placement):
@@ -110,7 +125,8 @@ class BlocksWorldEnvironment(Environment):
 
 
     def step(self) -> bool:
-        print("\n".join([str(adata) for adata in self.agents_data]))
+        if self.verbose:
+            print("\n".join([str(adata) for adata in self.agents_data]))
 
         completed = 0
 
@@ -120,99 +136,130 @@ class BlocksWorldEnvironment(Environment):
             current_world = self.worldstate.clone()
 
             act = adata.agent.response(BlocksWorldPerception(current_world, agent_station,
-                                                             adata.previous_action_succeeded, adata.holding))
-            print("Agent %s opts for %s" % (str(adata.agent), str(act)))
+                                                             adata.previous_action_succeeded,
+                                                             adata.holding,
+                                                             adata.previous_action_message))
+            if self.verbose:
+                print("Agent %s opts for %s" % (str(adata.agent), str(act)))
 
             # set previous action succeeded as False, initially
             adata.previous_action_succeeded = False
+            adata.previous_action_message = "Action failed: unspecified error"
 
             if (act.get_type() == "putdown" or act.get_type() == "stack") and \
                 (not adata.holding or adata.holding != act.get_first_arg()):
-                raise RuntimeError("Can't work with that block [%s]; agent is holding [%s]"
-                                   % (str(act.get_first_arg()), str(adata.holding)))
+                adata.previous_action_message = "Action failed: cannot execute %s; agent is holding [%s]" \
+                                                % (str(act), str(adata.holding))
+                self._log_action_outcome(adata, act)
+                continue
 
             if (act.get_type() == "pickup" or act.get_type() == "unstack") and adata.holding:
-                raise RuntimeError("Can't work with that block [%s]; agent is holding [%s]"
-                                   % (str(act.get_first_arg()), str(adata.holding)))
+                adata.previous_action_message = "Action failed: cannot execute %s while already holding [%s]" \
+                                                % (str(act), str(adata.holding))
+                self._log_action_outcome(adata, act)
+                continue
 
-            if act.get_type() == "pickup":
-                # modify world; remove station; switch agent to other station.
-                block_in_stacks = False
-                for stack in world_stacks:
-                    if act.get_argument() in stack:
-                        block_in_stacks = True
-                        break
+            try:
+                if act.get_type() == "pickup":
+                    # modify world; remove station; switch agent to other station.
+                    block_in_stacks = False
+                    for stack in world_stacks:
+                        if act.get_argument() in stack:
+                            block_in_stacks = True
+                            break
 
-                if not block_in_stacks:
-                    raise RuntimeError("The block [%s] is not present in any of the stacks " % str(act.get_argument()))
+                    if not block_in_stacks:
+                        adata.previous_action_message = "Action failed: block [%s] is not present in any stack" \
+                                                        % str(act.get_argument())
+                        self._log_action_outcome(adata, act)
+                        continue
 
-                adata.holding = self.worldstate.pick_up(act.get_argument())
-                adata.station = self.station
-                adata.previous_action_succeeded = True
+                    adata.holding = self.worldstate.pick_up(act.get_argument())
+                    adata.station = self.station
+                    adata.previous_action_succeeded = True
+                    adata.previous_action_message = "Action succeeded: %s" % str(act)
 
-            elif act.get_type() == "putdown":
-                # modify world;
-                # current stack is always the last one
-                current_stack = world_stacks[-1]
-                self.worldstate.put_down(act.get_argument(), current_stack)
+                elif act.get_type() == "putdown":
+                    # modify world;
+                    # current stack is always the last one
+                    current_stack = world_stacks[-1]
+                    self.worldstate.put_down(act.get_argument(), current_stack)
 
-                adata.holding = None
-                adata.previous_action_succeeded = True
+                    adata.holding = None
+                    adata.previous_action_succeeded = True
+                    adata.previous_action_message = "Action succeeded: %s" % str(act)
 
-            elif act.get_type() == "unstack":
-                block_in_stacks = False
-                for stack in world_stacks:
-                    if act.get_first_arg() in stack:
-                        block_in_stacks = True
-                        break
+                elif act.get_type() == "unstack":
+                    block_in_stacks = False
+                    for stack in world_stacks:
+                        if act.get_first_arg() in stack:
+                            block_in_stacks = True
+                            break
 
-                if not block_in_stacks:
-                    raise RuntimeError("The block [%s] is not in any of the current world stacks "
-                                     % (str(act.get_first_arg())))
+                    if not block_in_stacks:
+                        adata.previous_action_message = "Action failed: block [%s] is not in any current stack" \
+                                                        % str(act.get_first_arg())
+                        self._log_action_outcome(adata, act)
+                        continue
 
-                adata.holding = self.worldstate.unstack(act.get_first_arg(), act.get_second_arg())
-                adata.previous_action_succeeded = True
+                    adata.holding = self.worldstate.unstack(act.get_first_arg(), act.get_second_arg())
+                    adata.previous_action_succeeded = True
+                    adata.previous_action_message = "Action succeeded: %s" % str(act)
 
-            elif act.get_type() == "stack":
-                block_in_stacks = False
-                for stack in world_stacks:
-                    if act.get_second_arg() in stack:
-                        block_in_stacks = True
-                        break
+                elif act.get_type() == "stack":
+                    block_in_stacks = False
+                    for stack in world_stacks:
+                        if act.get_second_arg() in stack:
+                            block_in_stacks = True
+                            break
 
-                if not block_in_stacks:
-                    raise RuntimeError("The block [%s] is not in any of the current world stacks"
-                                       % (str(act.get_second_arg())))
+                    if not block_in_stacks:
+                        adata.previous_action_message = "Action failed: support block [%s] is not in any current stack" \
+                                                        % str(act.get_second_arg())
+                        self._log_action_outcome(adata, act)
+                        continue
 
-                self.worldstate.stack(act.get_first_arg(), act.get_second_arg())
-                adata.holding = None
-                adata.previous_action_succeeded = True
-
-
-            elif act.get_type() == "lock":
-                block_in_stacks = False
-                for stack in world_stacks:
-                    if act.get_argument() in stack:
-                        block_in_stacks = True
-                        break
-
-                if not block_in_stacks:
-                    raise RuntimeError("The block [%s] is not in any of the current world stacks"
-                                       % (str(act.get_argument())))
-
-                self.worldstate.lock(act.get_argument())
-                adata.previous_action_succeeded = True
+                    self.worldstate.stack(act.get_first_arg(), act.get_second_arg())
+                    adata.holding = None
+                    adata.previous_action_succeeded = True
+                    adata.previous_action_message = "Action succeeded: %s" % str(act)
 
 
-            elif act.get_type() == "agent_completed":
-                completed += 1
-                adata.previous_action_succeeded = True
+                elif act.get_type() == "lock":
+                    block_in_stacks = False
+                    for stack in world_stacks:
+                        if act.get_argument() in stack:
+                            block_in_stacks = True
+                            break
 
-            elif act.get_type() == "no_action":
-                adata.previous_action_succeeded = True
+                    if not block_in_stacks:
+                        adata.previous_action_message = "Action failed: block [%s] is not in any current stack" \
+                                                        % str(act.get_argument())
+                        self._log_action_outcome(adata, act)
+                        continue
 
-            else:
-                raise RuntimeError("Should not be here: action not recognized %s" % act.get_type())
+                    self.worldstate.lock(act.get_argument())
+                    adata.previous_action_succeeded = True
+                    adata.previous_action_message = "Action succeeded: %s" % str(act)
+
+
+                elif act.get_type() == "agent_completed":
+                    completed += 1
+                    adata.previous_action_succeeded = True
+                    adata.previous_action_message = "Action succeeded: %s" % str(act)
+
+                elif act.get_type() == "no_action":
+                    adata.previous_action_succeeded = True
+                    adata.previous_action_message = "Action succeeded: %s" % str(act)
+
+                else:
+                    adata.previous_action_message = "Action failed: unrecognized action type [%s]" % act.get_type()
+
+                self._log_action_outcome(adata, act)
+            except Exception as e:
+                adata.previous_action_succeeded = False
+                adata.previous_action_message = "Action failed: %s (%s)" % (str(act), str(e))
+                self._log_action_outcome(adata, act)
 
         ## if we have a single agent, check if the blocks are in the desired final state and then mark the game as completed
         if len(self.agents_data) == 1:
@@ -253,26 +300,22 @@ class BlocksWorldEnvironment(Environment):
 
 class DynamicAction(object):
     STASH       = "stash"
-    STASH_PROB  = 0.2
+    STASH_PROB  = 0.3
 
     UNSTASH     = "unstash"
-    UNSTASH_PROB = 0.2
+    UNSTASH_PROB = 0.3
 
     DROP        = "drop"
-    DROP_PROB   = 0.3
+    DROP_PROB   = 0.4
 
     TELEPORT    = "teleport"
     TELEPORT_PROB = 0.0
-
-    LOCK = "lock"
-    LOCK_PROB = 0.3
 
     ACTIONS = [
         (STASH, STASH_PROB),
         (UNSTASH, UNSTASH_PROB),
         (DROP, DROP_PROB),
-        (TELEPORT, TELEPORT_PROB),
-        (LOCK, LOCK_PROB)
+        (TELEPORT, TELEPORT_PROB)
     ]
 
     def __init__(self, type, probability):
@@ -301,15 +344,14 @@ class DynamicEnvironment(BlocksWorldEnvironment):
 
     HEAD = "\t\t\t\t\t\t\t\t<DYNAMICS>"
 
-    def __init__(self, world: BlocksWorld):
-        super(DynamicEnvironment, self).__init__(world)
+    def __init__(self, world: BlocksWorld, verbose: bool = True, dynamics_prob: float = 1.0):
+        super(DynamicEnvironment, self).__init__(world, verbose=verbose)
         self.stash = set([])
+        self.dynamics_prob = dynamics_prob
 
 
     def _perform_dynamic_action(self) -> None:
-        from my import Tester
-
-        if random.random() < Tester.DYNAMICS_PROB:
+        if random.random() < self.dynamics_prob:
             dyna = DynamicAction.pick()
 
             # print("[DYNAMIC ENV] selected action: " + str(dyna))
@@ -328,7 +370,8 @@ class DynamicEnvironment(BlocksWorldEnvironment):
                     self.worldstate.unstack(b, s.get_below(b))
 
                 self.stash.add(b)
-                print(DynamicEnvironment.HEAD + "[ %s ] -> stash" % str(b))
+                if self.verbose:
+                    print(DynamicEnvironment.HEAD + "[ %s ] -> stash" % str(b))
 
             elif dyna.type == DynamicAction.UNSTASH:
                 if not self.stash:
@@ -339,7 +382,8 @@ class DynamicEnvironment(BlocksWorldEnvironment):
 
                 s = self._pick_stack(True, True, observed_stacks)
                 self.worldstate.stack(b, s.get_top_block())
-                print(DynamicEnvironment.HEAD + "[ %s ] : stash -> %s." % (str(b), str(s)))
+                if self.verbose:
+                    print(DynamicEnvironment.HEAD + "[ %s ] : stash -> %s." % (str(b), str(s)))
 
             elif dyna.type == DynamicAction.DROP:
                 s = self._pick_stack(False, False, observed_stacks)
@@ -350,7 +394,8 @@ class DynamicEnvironment(BlocksWorldEnvironment):
                 self.worldstate.unstack(b, s.get_below(b))
                 self.worldstate.put_down(b, s)
 
-                print(DynamicEnvironment.HEAD + " [ %s ] -> ___." % str(b))
+                if self.verbose:
+                    print(DynamicEnvironment.HEAD + " [ %s ] -> ___." % str(b))
 
             elif dyna.type == DynamicAction.TELEPORT:
                 s = self._pick_stack(True, False, observed_stacks)
@@ -366,26 +411,8 @@ class DynamicEnvironment(BlocksWorldEnvironment):
                 s1 = self._pick_stack(True, True, observed_stacks)
                 self.worldstate.stack(b, s1.get_top_block())
 
-                print(DynamicEnvironment.HEAD + " [ %s ] : %s -> %s." % (str(b), str(s), str(s1)))
-            elif dyna.type == DynamicAction.LOCK:
-                s = self._pick_stack(True, False, observed_stacks)
-                if not s:
-                    return
-                # get the first block that is not locked
-                b = None
-                for block in s.get_blocks():
-                    if not s.is_locked(block):
-                        b = block
-                        break
-                
-                # pick a random block
-                # b = random.choice(list(s.get_blocks()))
-
-                # lock that block
-                if b:
-                    self.worldstate.lock(b)
-                    print(DynamicEnvironment.HEAD + " [ %s ] -> lock." % str(b))
-
+                if self.verbose:
+                    print(DynamicEnvironment.HEAD + " [ %s ] : %s -> %s." % (str(b), str(s), str(s1)))
             else:
                 raise RuntimeError("Unrecognized dynamic action type: %s" % dyna.type)
 
