@@ -179,6 +179,16 @@ if __name__ == '__main__':
         decay = spec['decay']
     )
 
+    # dump the spec dict into a key value string
+    spec_str = '_'.join([f'{k}={v}' for k, v in spec.items()])
+
+    with open(f'dumps/experiment_{spec_str}.json', 'wt') as f:
+        json.dump({
+            'reward': reward,
+            'total_loss': total_loss,
+            'spec': spec
+            }, f)
+
     # close the environment
     env.close()
 
