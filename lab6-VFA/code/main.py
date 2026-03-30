@@ -81,8 +81,9 @@ def q_learning(
                 action = torch.argmax(q_values).item()
 
             step_res = env.step(action)
-            next_state, reward, done, _, _ = step_res
-
+            next_state, reward, terminated, truncated, _ = step_res
+            
+            done = terminated or truncated
             episode_reward += reward
 
             q_values = model.predict(state).tolist()
@@ -150,7 +151,7 @@ if __name__ == '__main__':
         hidden_dim = 100,
         lr = spec['lr']
     )
-    reward, total_loss = q_learning(
+    total_reward, total_loss = q_learning(
         env,
         estimator,
         spec['episodes'],
@@ -159,12 +160,15 @@ if __name__ == '__main__':
         decay = spec['decay']
     )
 
+    # print some statistics about the total reward
+    print(f"Total reward: mean={np.mean(total_reward)}, std={np.std(total_reward)}, min={np.min(total_reward)}, max={np.max(total_reward)}")
+
     # dump the spec dict into a key value string
     spec_str = '_'.join([f'{k}={v}' for k, v in spec.items()])
 
     with open(f'dumps/experiment_{spec_str}.json', 'wt') as f:
         json.dump({
-            'reward': reward,
+            'reward': total_reward,
             'total_loss': total_loss,
             'spec': spec
             }, f)
@@ -176,16 +180,16 @@ if __name__ == '__main__':
     # Create the figure and subplots with shared x-axis
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), sharex=False)
 
-    print(f"Reward length: {len(reward)}")
+    print(f"Reward length: {len(total_reward)}")
     print(f"Loss length: {len(total_loss)}")
 
     # Process and plot reward data
-    x_reward, reward_mean, reward_var = moving_average_with_variance(np.array(reward), window_size=50)
+    x_reward, reward_mean, reward_var = moving_average_with_variance(np.array(total_reward), window_size=50)
     ax1.plot(x_reward, reward_mean, color='blue', label='Moving Avg (50 episodes)')
     ax1.fill_between(x_reward, reward_var[0], reward_var[1], alpha=0.3, color='blue')
     ax1.set_ylabel('Total Reward')
     ax1.set_title('Moving Average of Total Reward with Variance')
-    reward_tick = (max(reward) - min(reward)) / 40
+    reward_tick = (max(total_reward) - min(total_reward)) / 20
     ax1.yaxis.set_major_locator(plt.MultipleLocator(reward_tick))
     ax1.legend()
     ax1.grid(True, alpha=0.3)
@@ -194,7 +198,7 @@ if __name__ == '__main__':
     x_loss, loss_mean, loss_var = moving_average_with_variance(np.array(total_loss), window_size=500)
     ax2.plot(x_loss, loss_mean, color='red', label='Moving Avg (500 episodes)')
     ax2.fill_between(x_loss, loss_var[0], loss_var[1], alpha=0.3, color='red')
-    loss_tick = (max(total_loss) - min(total_loss)) / 40
+    loss_tick = (max(total_loss) - min(total_loss)) / 20
     ax2.set_xlabel('Episodes')
     ax2.set_ylabel('Total Loss')
     ax2.set_title('Moving Average of Total Loss with Variance')

@@ -90,7 +90,8 @@ def q_learning(
             action = select_action(state, epsilon, model)
             
             step_res = env.step(action)
-            next_state, reward, done, _, _ = step_res
+            next_state, reward, terminated, truncated, _ = step_res
+            done = terminated or truncated
             episode_reward += reward
 
             # TODO 3: Implement the Q-learning update rule, using the model.predict and model.update functions

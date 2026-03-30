@@ -43,7 +43,7 @@ def plot_experiment(dump_path: Path):
     ax1.fill_between(x_reward, reward_var[0], reward_var[1], alpha=0.3, color='blue')
     ax1.set_ylabel('Total Reward')
     ax1.set_title('Moving Average of Total Reward with Variance')
-    reward_tick = (max(reward) - min(reward)) / 40
+    reward_tick = (max(reward) - min(reward)) / 20
     ax1.yaxis.set_major_locator(plt.MultipleLocator(reward_tick))
     ax1.legend()
     ax1.grid(True, alpha=0.3)
@@ -51,7 +51,7 @@ def plot_experiment(dump_path: Path):
     x_loss, loss_mean, loss_var = moving_average_with_variance(np.array(total_loss), window_size=500)
     ax2.plot(x_loss, loss_mean, color='red', label='Moving Avg (500 steps)')
     ax2.fill_between(x_loss, loss_var[0], loss_var[1], alpha=0.3, color='red')
-    loss_tick = (max(total_loss) - min(total_loss)) / 40
+    loss_tick = (max(total_loss) - min(total_loss)) / 20
     ax2.set_xlabel('Steps')
     ax2.set_ylabel('Total Loss')
     ax2.set_title('Moving Average of Total Loss with Variance')
