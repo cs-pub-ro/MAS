@@ -12,7 +12,7 @@ class CommonsPerception(object):
     """
     The perception data structure received by agents in the Tragedy of the Commons scenario
     """
-    def __init__(self, destination_id: int, resource_quantity: float, resource_remaining: float, num_commons: int,
+    def __init__(self, destination_id: int, resource_quantity: float, resource_remaining: float, num_agents: int,
                  resource_shares: Dict[int, float] = None,
                  aggregate_adjustment: Dict[int, float] = None,
                  round_finished: bool = False):
@@ -29,7 +29,7 @@ class CommonsPerception(object):
         self.resource_quantity = resource_quantity
         self.resource_remaining = resource_remaining
 
-        self.num_commons = num_commons
+        self.num_agents = num_agents
 
         self.resource_shares = resource_shares
         self.aggregate_adjustment = aggregate_adjustment
@@ -49,7 +49,7 @@ class CommonsAgent(Agent):
         self.utility_score = 0
 
     def specify_share(self, perception: CommonsPerception) -> float:
-        raise NotImplementedError("Must be implemented by student")
+        return 1.0 / (2 * perception.num_agents)
 
     def negotiation_response(self, negotiation_round: int, perception: CommonsPerception,
                              utility_func: Callable[[float, float, List[float]], float]) -> AgentAction:
@@ -344,7 +344,7 @@ class CommonsEnvironment(Environment):
     
     def __generate_plots(self):
         # style
-        plt.style.use('seaborn-darkgrid')
+        plt.style.use('default')
 
         # create Individual Utility plot
         fig_individual_utils = plt.figure("Individual Utilities")
@@ -356,7 +356,7 @@ class CommonsEnvironment(Environment):
                 else:
                     cumultated_agent_utilities[ag].append(scores[ag])
 
-        colors = pl.cm.jet(np.linspace(0, 1, len(cumultated_agent_utilities)))
+        colors = plt.cm.jet(np.linspace(0, 1, len(cumultated_agent_utilities)))
 
         num_color = 0
         for ag in cumultated_agent_utilities:
