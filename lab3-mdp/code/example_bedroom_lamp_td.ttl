@@ -1,0 +1,196 @@
+@prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> .
+@prefix json: <https://www.w3.org/2019/wot/json-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix td: <https://www.w3.org/2019/wot/td#> .
+@prefix wotsec: <https://www.w3.org/2019/wot/security#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ha:light.bedroom_lamp> a td:Thing ;
+    td:description "WoT Thing Description for bedroom light" ;
+    td:hasEventAffordance [ a td:EventAffordance ;
+            td:description "Event emitted when light.bedroom_lamp state changes" ;
+            td:hasDataSchema [ a json:ObjectSchema ;
+                    json:properties [ a json:ObjectSchema ;
+                            json:propertyName "old_state" ],
+                        [ a json:ObjectSchema ;
+                            json:propertyName "new_state" ],
+                        [ a json:StringSchema ;
+                            json:propertyName "entity_id" ] ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:forSubProtocol "longpoll" ;
+                    hctl:hasOperationType td:subscribeEvent ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/events/state_changed> ] ;
+            td:name "state_changed" ;
+            td:title "state_changed" ] ;
+    td:hasPropertyAffordance [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:StringSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "state" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "state" ;
+            td:observable true ;
+            td:title "state" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "color_mode" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "color_mode" ;
+            td:observable true ;
+            td:title "color_mode" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "effect" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "effect" ;
+            td:observable true ;
+            td:title "effect" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:IntegerSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "min_color_temp_kelvin" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "min_color_temp_kelvin" ;
+            td:observable true ;
+            td:title "min_color_temp_kelvin" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "xy_color" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "xy_color" ;
+            td:observable true ;
+            td:title "xy_color" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:IntegerSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "max_mireds" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "max_mireds" ;
+            td:observable true ;
+            td:title "max_mireds" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:ArraySchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "supported_color_modes" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "supported_color_modes" ;
+            td:observable true ;
+            td:title "supported_color_modes" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:IntegerSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "min_mireds" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "min_mireds" ;
+            td:observable true ;
+            td:title "min_mireds" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "rgb_color" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "rgb_color" ;
+            td:observable true ;
+            td:title "rgb_color" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "hs_color" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "hs_color" ;
+            td:observable true ;
+            td:title "hs_color" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "brightness" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "brightness" ;
+            td:observable true ;
+            td:title "brightness" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "color_temp" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "color_temp" ;
+            td:observable true ;
+            td:title "color_temp" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:IntegerSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "max_color_temp_kelvin" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "max_color_temp_kelvin" ;
+            td:observable true ;
+            td:title "max_color_temp_kelvin" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:ArraySchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "effect_list" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "effect_list" ;
+            td:observable true ;
+            td:title "effect_list" ],
+        [ a td:PropertyAffordance ;
+            td:hasDataSchema [ a json:DataSchema ] ;
+            td:hasForm [ hctl:forContentType "application/json" ;
+                    hctl:hasOperationType td:readProperty ;
+                    hctl:hasTarget <http://192.168.1.135:8123/api/states/light.bedroom_lamp> ;
+                    td:hasOutputSchema [ a json:ObjectSchema ;
+                            json:property "color_temp_kelvin" ;
+                            td:contentMediaType "application/json" ] ] ;
+            td:name "color_temp_kelvin" ;
+            td:observable true ;
+            td:title "color_temp_kelvin" ] ;
+    td:security ( _:Nb0c4dfed2ab347e49d00fa11f52e9723 ) ;
+    td:securityDefinitions [ td:bearerSecurityScheme _:Nb0c4dfed2ab347e49d00fa11f52e9723 ] ;
+    td:title "Bedroom Light" .
+
+_:Nb0c4dfed2ab347e49d00fa11f52e9723 wotsec:in_ "header" ;
+    wotsec:scheme "bearer" .
+

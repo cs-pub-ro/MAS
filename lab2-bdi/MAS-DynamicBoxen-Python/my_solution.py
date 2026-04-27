@@ -363,7 +363,7 @@ class MySolutionAgent(MyAgent):
 
 
 class Tester(object):
-    STEP_DELAY = 0.0
+    STEP_DELAY = 2.0
     TEST_SUITE = "tests/0e-large/"
     VERBOSE = True
 

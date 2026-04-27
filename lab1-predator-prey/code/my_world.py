@@ -483,18 +483,18 @@ class Tester(object):
 
 
 if __name__ == "__main__":
-    tester = Tester(predator_agent_type=MyPredator, rand_seed=42, delay=0.1)
+    tester = Tester(predator_agent_type=MyPredator, rand_seed=42, delay=0.5)
     step_count, prey_kill_times = tester.make_steps()
     print("Step count: ", step_count)
     print("Prey kill times: ", prey_kill_times)
 
-    # NUM_TESTS = 20
+    # NUM_TESTS = 10
     
     # step_count_list = []
     # prey_kill_times_list = []
 
     # for i in range(NUM_TESTS):
-    #     tester = Tester(predator_agent_type=MyPredator, rand_seed=42+i, delay=0.1)
+    #     tester = Tester(predator_agent_type=MyPredator, rand_seed=42+i, delay=0.0)
     #     step_count, prey_kill_times = tester.make_steps()
 
     #     step_count_list.append(step_count)

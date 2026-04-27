@@ -1,0 +1,1364 @@
+[
+  {
+    "@id": "urn:ha:light.bedroom_lamp",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#Thing"
+    ],
+    "https://www.w3.org/2019/wot/td#description": [
+      {
+        "@value": "WoT Thing Description for bedroom light"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasEventAffordance": [
+      {
+        "@id": "_:N940953a42d2141bc8fcd1b721c903eff"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasPropertyAffordance": [
+      {
+        "@id": "_:N2ebc0a3290f74c77985d5b33c1f77d67"
+      },
+      {
+        "@id": "_:Nc82a4b69cf874c66aae6b155587b6b9b"
+      },
+      {
+        "@id": "_:N56b8c5e865434e45954e93634070669e"
+      },
+      {
+        "@id": "_:N40a8a59099fc4ea0813fc016875ffb7b"
+      },
+      {
+        "@id": "_:Ndce027dc66f547bb94121b7a98fdb1c3"
+      },
+      {
+        "@id": "_:N4a9425361d3b4014a6d4bf58da0f815b"
+      },
+      {
+        "@id": "_:N2c5614816308402ca83194c601d002a7"
+      },
+      {
+        "@id": "_:N2844916cba0d4e52a60f8c363057d81b"
+      },
+      {
+        "@id": "_:N8abf5599f3b8458295cd4defe5db6ebc"
+      },
+      {
+        "@id": "_:Nfbebdbcde3934edca95ca59397a1615d"
+      },
+      {
+        "@id": "_:Na451d7d5c2374be08cf65fb963a75d20"
+      },
+      {
+        "@id": "_:N63b02f795cb24ecf8ff19116e5599f2d"
+      },
+      {
+        "@id": "_:N5a56e198d66c44c0a75fb2283f53d668"
+      },
+      {
+        "@id": "_:N402fb7096db349dfbac4cc50ce2fed08"
+      },
+      {
+        "@id": "_:N05cb13813a5440fc9ea07a55256ad116"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#security": [
+      {
+        "@list": [
+          {
+            "@id": "_:Nb0c4dfed2ab347e49d00fa11f52e9723"
+          }
+        ]
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#securityDefinitions": [
+      {
+        "@id": "_:N812ba80d12cd454fb2dd9f07b9cc3800"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "Bedroom Light"
+      }
+    ]
+  },
+  {
+    "@id": "_:N812ba80d12cd454fb2dd9f07b9cc3800",
+    "https://www.w3.org/2019/wot/td#bearerSecurityScheme": [
+      {
+        "@id": "_:Nb0c4dfed2ab347e49d00fa11f52e9723"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nb0c4dfed2ab347e49d00fa11f52e9723",
+    "https://www.w3.org/2019/wot/security#in_": [
+      {
+        "@value": "header"
+      }
+    ],
+    "https://www.w3.org/2019/wot/security#scheme": [
+      {
+        "@value": "bearer"
+      }
+    ]
+  },
+  {
+    "@id": "_:N2ebc0a3290f74c77985d5b33c1f77d67",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N08d2c315cd85414b8475b002a7d2078a"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:Na7f1741c96a54ebb8bb693f0fe310f93"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "min_color_temp_kelvin"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "min_color_temp_kelvin"
+      }
+    ]
+  },
+  {
+    "@id": "_:N08d2c315cd85414b8475b002a7d2078a",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#IntegerSchema"
+    ]
+  },
+  {
+    "@id": "_:Na7f1741c96a54ebb8bb693f0fe310f93",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N28dd5f63bebd4444bf1a0d0b9d74d0a9"
+      }
+    ]
+  },
+  {
+    "@id": "_:N28dd5f63bebd4444bf1a0d0b9d74d0a9",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "min_color_temp_kelvin"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nc82a4b69cf874c66aae6b155587b6b9b",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:Nfda0add321fc41988e8e0231770a9ed3"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N9f720837da4a450680a541598080ff53"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "max_color_temp_kelvin"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "max_color_temp_kelvin"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nfda0add321fc41988e8e0231770a9ed3",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#IntegerSchema"
+    ]
+  },
+  {
+    "@id": "_:N9f720837da4a450680a541598080ff53",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N027dddd9c7bf4754a63e48f0aacacde2"
+      }
+    ]
+  },
+  {
+    "@id": "_:N027dddd9c7bf4754a63e48f0aacacde2",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "max_color_temp_kelvin"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N56b8c5e865434e45954e93634070669e",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:Nf9cb4290e2ec4db4a40fd3d4b17fca02"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:Nf83aa6a202dd4e6594a7112bf24f3016"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "min_mireds"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "min_mireds"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nf9cb4290e2ec4db4a40fd3d4b17fca02",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#IntegerSchema"
+    ]
+  },
+  {
+    "@id": "_:Nf83aa6a202dd4e6594a7112bf24f3016",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N6391b1a2161141efaeae0856ea5d9573"
+      }
+    ]
+  },
+  {
+    "@id": "_:N6391b1a2161141efaeae0856ea5d9573",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "min_mireds"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N40a8a59099fc4ea0813fc016875ffb7b",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:Nd0d8d9237f044187ac190626d3068058"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N9102c3c5eadc4d54979f64daf632cdcf"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "max_mireds"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "max_mireds"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nd0d8d9237f044187ac190626d3068058",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#IntegerSchema"
+    ]
+  },
+  {
+    "@id": "_:N9102c3c5eadc4d54979f64daf632cdcf",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N7dc39435428744c4893edadb82b4d0bb"
+      }
+    ]
+  },
+  {
+    "@id": "_:N7dc39435428744c4893edadb82b4d0bb",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "max_mireds"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:Ndce027dc66f547bb94121b7a98fdb1c3",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N478cd3504ef740ce9475d216e60f98c8"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:Ne3d14963e61d4cfc9c211f62d26371f6"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "effect_list"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "effect_list"
+      }
+    ]
+  },
+  {
+    "@id": "_:N478cd3504ef740ce9475d216e60f98c8",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ArraySchema"
+    ]
+  },
+  {
+    "@id": "_:Ne3d14963e61d4cfc9c211f62d26371f6",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N9d67782d039b474b8ce00328016383bf"
+      }
+    ]
+  },
+  {
+    "@id": "_:N9d67782d039b474b8ce00328016383bf",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "effect_list"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N4a9425361d3b4014a6d4bf58da0f815b",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N4a284b65281840bfa225af26156ebeb4"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:Nc59e589182e24bc58d215719ced1e42c"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "supported_color_modes"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "supported_color_modes"
+      }
+    ]
+  },
+  {
+    "@id": "_:N4a284b65281840bfa225af26156ebeb4",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ArraySchema"
+    ]
+  },
+  {
+    "@id": "_:Nc59e589182e24bc58d215719ced1e42c",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:Na63eb3f8229840e689f9f3fccc9dc48a"
+      }
+    ]
+  },
+  {
+    "@id": "_:Na63eb3f8229840e689f9f3fccc9dc48a",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "supported_color_modes"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N2c5614816308402ca83194c601d002a7",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N3fd4efcc99a84b55baf561af519b5d8b"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N2827b726f96441c9a3ae16dc6d461582"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "effect"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "effect"
+      }
+    ]
+  },
+  {
+    "@id": "_:N3fd4efcc99a84b55baf561af519b5d8b",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:N2827b726f96441c9a3ae16dc6d461582",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N7402694d73954ce5b5d7358d1717890d"
+      }
+    ]
+  },
+  {
+    "@id": "_:N7402694d73954ce5b5d7358d1717890d",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "effect"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N2844916cba0d4e52a60f8c363057d81b",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N45896cd1d73c4e758da552def3172df7"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N7122fa63942d478698d003fc44ff5f10"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "color_mode"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "color_mode"
+      }
+    ]
+  },
+  {
+    "@id": "_:N45896cd1d73c4e758da552def3172df7",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:N7122fa63942d478698d003fc44ff5f10",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N8347ffd5b9ca4900ab812d6993c8c131"
+      }
+    ]
+  },
+  {
+    "@id": "_:N8347ffd5b9ca4900ab812d6993c8c131",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "color_mode"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N8abf5599f3b8458295cd4defe5db6ebc",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N91abc6058ac84751b7a6366a3eb59de5"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N2055a62e829a42f292c31cc10ae29606"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "brightness"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "brightness"
+      }
+    ]
+  },
+  {
+    "@id": "_:N91abc6058ac84751b7a6366a3eb59de5",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:N2055a62e829a42f292c31cc10ae29606",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:Na71126b336804581a5f3cc46b8d0ef75"
+      }
+    ]
+  },
+  {
+    "@id": "_:Na71126b336804581a5f3cc46b8d0ef75",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "brightness"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nfbebdbcde3934edca95ca59397a1615d",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N3bba99eb945948c28e91548dd407bed6"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N73428faafd164953a622b17f0fe4fe5b"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "color_temp_kelvin"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "color_temp_kelvin"
+      }
+    ]
+  },
+  {
+    "@id": "_:N3bba99eb945948c28e91548dd407bed6",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:N73428faafd164953a622b17f0fe4fe5b",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:Nde6ea4fb50eb4a0bac49e80253384f50"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nde6ea4fb50eb4a0bac49e80253384f50",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "color_temp_kelvin"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:Na451d7d5c2374be08cf65fb963a75d20",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N27975d0613b6456bb8cc0c28191283b7"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N7d25426048754c7cb0e5b627096f203e"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "color_temp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "color_temp"
+      }
+    ]
+  },
+  {
+    "@id": "_:N27975d0613b6456bb8cc0c28191283b7",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:N7d25426048754c7cb0e5b627096f203e",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N8605e6a60ee14fb7ab4e030d4b1837a3"
+      }
+    ]
+  },
+  {
+    "@id": "_:N8605e6a60ee14fb7ab4e030d4b1837a3",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "color_temp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N63b02f795cb24ecf8ff19116e5599f2d",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N4bc5607b587c42f79b544c24947fea77"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N7e38cf7ae0c84b97893f97b28f970d20"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "hs_color"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "hs_color"
+      }
+    ]
+  },
+  {
+    "@id": "_:N4bc5607b587c42f79b544c24947fea77",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:N7e38cf7ae0c84b97893f97b28f970d20",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N678d3dffe3324d50893186e768db9fe1"
+      }
+    ]
+  },
+  {
+    "@id": "_:N678d3dffe3324d50893186e768db9fe1",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "hs_color"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N5a56e198d66c44c0a75fb2283f53d668",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:Na27d0a3386154ee384d93730e3d24e1c"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N21fc64b6aafa42f9b8e5087ced511915"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "rgb_color"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "rgb_color"
+      }
+    ]
+  },
+  {
+    "@id": "_:Na27d0a3386154ee384d93730e3d24e1c",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:N21fc64b6aafa42f9b8e5087ced511915",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:Na969b46e401e46a5a8f9ab055e92b8ca"
+      }
+    ]
+  },
+  {
+    "@id": "_:Na969b46e401e46a5a8f9ab055e92b8ca",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "rgb_color"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N402fb7096db349dfbac4cc50ce2fed08",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:N311416ff42394418a85681f8290e9c44"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:Nd7e29713bbe3402680a5cbd4e1f4e4f5"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "xy_color"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "xy_color"
+      }
+    ]
+  },
+  {
+    "@id": "_:N311416ff42394418a85681f8290e9c44",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#DataSchema"
+    ]
+  },
+  {
+    "@id": "_:Nd7e29713bbe3402680a5cbd4e1f4e4f5",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:Na788c09eb785403093e5b818a65b61d4"
+      }
+    ]
+  },
+  {
+    "@id": "_:Na788c09eb785403093e5b818a65b61d4",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "xy_color"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N05cb13813a5440fc9ea07a55256ad116",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:Nefb32a4adfb34bf5b4c9898446572009"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N629c7d3391f743c8810bfb829da6d6dc"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "state"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#observable": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "state"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nefb32a4adfb34bf5b4c9898446572009",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#StringSchema"
+    ]
+  },
+  {
+    "@id": "_:N629c7d3391f743c8810bfb829da6d6dc",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#readProperty"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/states/light.bedroom_lamp"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasOutputSchema": [
+      {
+        "@id": "_:N474ef423a1464c3f8289495515419011"
+      }
+    ]
+  },
+  {
+    "@id": "_:N474ef423a1464c3f8289495515419011",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#property": [
+      {
+        "@value": "state"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#contentMediaType": [
+      {
+        "@value": "application/json"
+      }
+    ]
+  },
+  {
+    "@id": "_:N940953a42d2141bc8fcd1b721c903eff",
+    "@type": [
+      "https://www.w3.org/2019/wot/td#EventAffordance"
+    ],
+    "https://www.w3.org/2019/wot/td#description": [
+      {
+        "@value": "Event emitted when light.bedroom_lamp state changes"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasDataSchema": [
+      {
+        "@id": "_:Nca7f32e92b564647b2cc7ddc89a84d40"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#hasForm": [
+      {
+        "@id": "_:N824b813e51ae484680dedb89b0b40fd8"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#name": [
+      {
+        "@value": "state_changed"
+      }
+    ],
+    "https://www.w3.org/2019/wot/td#title": [
+      {
+        "@value": "state_changed"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nca7f32e92b564647b2cc7ddc89a84d40",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#properties": [
+      {
+        "@id": "_:Nf51579bb2e304744862252f2995a6b80"
+      },
+      {
+        "@id": "_:N1235e16cf7cf4384a3df7967db399de6"
+      },
+      {
+        "@id": "_:N60a29ded06be42cfb2da8c5335373f26"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nf51579bb2e304744862252f2995a6b80",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#StringSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#propertyName": [
+      {
+        "@value": "entity_id"
+      }
+    ]
+  },
+  {
+    "@id": "_:N1235e16cf7cf4384a3df7967db399de6",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#propertyName": [
+      {
+        "@value": "old_state"
+      }
+    ]
+  },
+  {
+    "@id": "_:N60a29ded06be42cfb2da8c5335373f26",
+    "@type": [
+      "https://www.w3.org/2019/wot/json-schema#ObjectSchema"
+    ],
+    "https://www.w3.org/2019/wot/json-schema#propertyName": [
+      {
+        "@value": "new_state"
+      }
+    ]
+  },
+  {
+    "@id": "_:N824b813e51ae484680dedb89b0b40fd8",
+    "https://www.w3.org/2019/wot/hypermedia#forContentType": [
+      {
+        "@value": "application/json"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#forSubProtocol": [
+      {
+        "@value": "longpoll"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasOperationType": [
+      {
+        "@id": "https://www.w3.org/2019/wot/td#subscribeEvent"
+      }
+    ],
+    "https://www.w3.org/2019/wot/hypermedia#hasTarget": [
+      {
+        "@id": "http://192.168.1.135:8123/api/events/state_changed"
+      }
+    ]
+  }
+]
