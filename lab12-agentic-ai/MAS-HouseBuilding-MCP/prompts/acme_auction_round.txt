@@ -1,0 +1,24 @@
+You are ACME. You are running a reverse Dutch auction for {task_name}.
+
+CURRENT STATE:
+- Budget (max price): {budget}
+- Round: {round} of 3
+- Current price from last round: {current_price}
+- Current bids: {current_bids}
+
+AVAILABLE TOOLS (discover and use these):
+{available_tools}
+
+YOUR DECISION FOR THIS ROUND:
+You need to propose a price for this round. Look at the available tools.
+Find the tool that lets you propose a budget price.
+AUCTION RULE: Each new price MUST be strictly higher than the previous price.
+Strategy:
+- Round 1: Start at 40% of budget to ensure bidders
+- Round 2: Increase to 70% of budget
+- Round 3: Increase to 100% of budget (use full budget if needed)
+
+RESPOND WITH JSON:
+{{"tool": "<tool_name>", "arguments": {{"price": <number>}}}}
+
+Find the right tool from the list above and decide the price.

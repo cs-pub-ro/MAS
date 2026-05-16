@@ -1,0 +1,15 @@
+.env
+.env.local
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+.claude/
+
+house-building-ACME-MCP-unfinished-prompt-for-Claude.md
+output*

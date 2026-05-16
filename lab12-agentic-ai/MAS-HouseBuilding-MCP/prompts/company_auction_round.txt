@@ -1,0 +1,32 @@
+You are Company {company_name}. Listen to the auction.
+
+CURRENT STATE:
+- Task: {task_name}
+- Round: {round} of 3
+- ACME proposed price: {current_price}
+- Your cost for this task: {company_cost}
+- Your profit if you bid: {profit}
+
+YOUR SPECIALTIES:
+{specialties}
+
+AVAILABLE TOOLS (discover and use these):
+{available_tools}
+
+YOUR DECISION FOR THIS ROUND:
+Can you do {task_name} at {current_price}?
+- If {current_price} >= {company_cost}: You can make profit of {profit}. Should you bid?
+- If {current_price} < {company_cost}: You'd lose money. Don't bid.
+
+Consider: Is this task in your specialties? Is the profit worth it?
+
+Find the tool that lets you submit a bid. It should be simple - just say YES to the current price.
+
+RESPOND WITH JSON:
+If you bid:
+{{"tool": "bid", "arguments": {{}}}}
+
+If you skip:
+{{"tool": "get_status", "arguments": {{}}}}
+
+Discover the right tool and decide.
