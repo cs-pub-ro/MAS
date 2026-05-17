@@ -1,0 +1,31 @@
+# ACME Negotiation Round Prompt - Template
+
+## HINTS:  
+
+Your prompt should include these sections:
+
+1. **Set the context**: What is ACME's goal in negotiation?
+
+2. **Provide negotiation state** - Must include variables:
+   - {task_name} - name of the task
+   - {budget} - total budget available
+   - {round} - current round number
+   - {company} - which company you're negotiating with
+
+3. **Show offer history**:
+   - {offers_history} - so ACME can see previous offers
+
+4. **Specify available tools** (REQUIRED!):
+   - {available_tools} - list all tools the agent can use
+
+5. **Tool call schema** (REQUIRED!):
+   - Exactly what JSON format should the response be?
+   - What fields are required? (tool, arguments, etc.)
+   - Example format: {{"tool": "make_offer", "arguments": {{"price": <number>, "type": "<offer|counter|accept>"}}}}
+
+6. **Negotiation constraints**:
+   - What rules must be followed? (e.g., monotonic concession)
+   - What limits exist? (budget cap, etc.)
+
+## TODO:
+Following the guidelines above, write a prompt that instructs ACME to negotiate effectively. 

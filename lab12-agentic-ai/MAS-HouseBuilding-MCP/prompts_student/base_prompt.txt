@@ -1,0 +1,61 @@
+# Base Prompt Template - Student Reference
+
+## HINTS FOR STUDENTS:
+
+This is a reference showing the structure of agent prompts in this system.
+
+### Key Components All Prompts Must Have:
+
+1. **Context/Role**:
+   - Who is the agent? (ACME buyer, Company contractor)
+   - What is their goal? (buy cheap, sell expensive)
+
+2. **Current State**:
+   - Provide relevant information using template variables
+   - Show the agent what's happening NOW
+
+3. **Available Tools** (CRITICAL!):
+   ```
+   AVAILABLE TOOLS (discover and use these):
+   {available_tools}
+   ```
+   This MUST be included so the agent knows what it can do
+
+4. **Response Format** (CRITICAL!):
+   - Tell the agent EXACTLY what JSON format to respond with
+   - Include the tool name and arguments schema
+   - Example:
+     ```
+     RESPOND WITH JSON:
+     {"tool": "<tool_name>", "arguments": {...}}
+     ```
+
+5. **Decision Logic**:
+   - How should the agent decide what to do?
+   - What criteria matter?
+   - What constraints exist?
+
+6. **Template Variables**:
+   - Use {variable_name} for values that change each time
+   - The orchestrator will fill these in automatically
+   - Examples: {task_name}, {budget}, {current_price}, {available_tools}
+
+### Template Variable Pattern:
+
+```
+prompt = template.format(
+    task_name=task.name,
+    budget=task.budget,
+    round=round_num,
+    available_tools=json.dumps(available_tools, indent=2),
+    # ... more variables
+)
+```
+
+## YOUR TURN:
+
+When writing prompts, remember:
+- Don't hardcode values - use {variable_name} instead
+- Always include the {available_tools} in a clear section
+- Always specify the exact JSON response format expected
+- Make the decision criteria clear to the LLM

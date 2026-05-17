@@ -1,0 +1,28 @@
+# Company Auction Round Prompt - Template
+
+## HINTS:
+
+Your prompt should:
+
+1. **Set the context**: Explain the company's role in the auction (bidder deciding whether to bid)
+2. **Provide company state**: Include variables like {company_name}, {task_name}, {round}, {company_cost}, {current_price}, {profit}
+3. **Include company specialties**: Use {specialties} to show what the company can do
+4. **Specify available tools**: MUST include the list of tools available. Use the variable {available_tools}
+5. **Tool call schema**: Tell the agent exactly what JSON format to respond with:
+   - Must include "tool" field with the tool name ("bid" or skip)
+   - Must include "arguments" field
+   - Example: {{"tool": "<tool_name>", "arguments": {{...}}}}
+6. **Decision criteria**: Explain when the company should bid
+7. **Fillers/Variables**: Use template variables that will be filled in:
+   - {company_name} - name of this company
+   - {task_name} - name of the task being auctioned
+   - {round} - current round number (1-3)
+   - {current_price} - ACME's proposed price
+   - {company_cost} - cost for this company to deliver the task
+   - {profit} - potential profit if they bid at current price
+   - {specialties} - list of what this company can do
+   - {available_tools} - JSON list of available MCP tools
+
+## TODO:
+Following the indications above, write a prompt that instructs a company to decide whether to bid at the current proposed price. 
+

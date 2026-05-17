@@ -1,0 +1,25 @@
+# ACME Auction Round Prompt - Template
+
+## HINTS:
+
+Your prompt should:
+
+1. **Set the context**: Explain what role ACME plays in the auction (buyer/auctioneer)
+2. **Provide current state**: Include variables like {task_name}, {budget}, {round}, {current_price}, {current_bids}
+3. **Specify available tools**: MUST include the list of tools available. Use the variable {available_tools}
+4. **Tool call schema**: Tell the agent exactly what JSON format to respond with:
+   - Must include "tool" field with the tool name
+   - Must include "arguments" field with the parameters
+   - Example: {{"tool": "<tool_name>", "arguments": {{...}}}}
+5. **Strategy guidance**: Give ACME hints about auction strategy (e.g., starting price, price progression)
+6. **Fillers/Variables**: Use template variables that will be filled in by the orchestrator:
+   - {task_name} - name of the task being auctioned
+   - {budget} - total budget available
+   - {round} - current round number (1-3)
+   - {current_price} - current proposed price
+   - {current_bids} - JSON array of bids received so far
+   - {available_tools} - JSON list of available MCP tools
+
+## TODO:
+Following the indications above, write a prompt that instructs ACME 
+to propose a price for the current round of the reverse Dutch auction.

@@ -1,0 +1,31 @@
+# Company Negotiation Round Prompt - Template
+
+## HINTS:
+
+Your prompt should:
+
+1. **Set the context**: Explain that the company wants to KEEP THE PRICE HIGH (you won the auction at a ceiling price)
+2. **Provide negotiation state**: Include variables like {company_name}, {task_name}, {round}, {company_cost}, {task_budget}
+3. **Show competitor count**: Use {num_competitors} - if 0, company has monopoly power and should hold firm
+4. **Show offer history**: Use {offers_history} to show all previous offers
+5. **Specify available tools**: MUST include the list of tools available. Use the variable {available_tools}
+6. **Tool call schema**: Tell the agent exactly what JSON format to respond with:
+   - Must include "tool" field ("make_offer")
+   - Must include "arguments" with "price" and "type" (offer/counter/accept)
+   - Example: {{"tool": "make_offer", "arguments": {{"price": <number>, "type": "<offer|counter|accept>"}}}}
+7. **Decide your strategy**: How will you negotiate?
+   - Use {num_competitors} to understand your competitive position
+   - Use {offers_history} to see how the negotiation has evolved
+8. **Negotiation rule**: Emphasize MONOTONIC CONCESSION: Each offer must be <= previous offer (prices only go DOWN)
+9. **Fillers/Variables**: Use template variables:
+    - {company_name} - name of this company
+    - {task_name} - name of the task
+    - {round} - current round (1-3)
+    - {company_cost} - your cost to deliver (absolute floor)
+    - {task_budget} - ACME's total budget
+    - {num_competitors} - how many other companies are also negotiating (0 = monopoly)
+    - {offers_history} - JSON array of all offers made so far
+    - {available_tools} - JSON list of available MCP tools
+
+## TODO:
+Following the guidelines above, write a prompt that instructs the company to negotiate strategically with ACME.
